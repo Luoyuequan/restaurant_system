@@ -1,2 +1,4 @@
-# restaurant_system
-restaurant system
+# 餐饮系统
+    包含前后台模块
+1. 后台
+2. 前台
