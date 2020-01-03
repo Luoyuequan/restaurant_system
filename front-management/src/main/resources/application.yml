@@ -1,7 +1,7 @@
 server:
   port: 9001
   servlet:
-    context-path: front_manager
+    context-path: /${spring.application.name}
 mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
   mapper-locations: classpath:mybatis/mapper/*.xml
@@ -20,3 +20,5 @@ spring:
     host: 127.0.0.1
     password:
     port: 6379
+  application:
+    name: frontmanager

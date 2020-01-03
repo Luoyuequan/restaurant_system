@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PersistentConfig">
+    <option name="historyConfigList">
+      <map>
+        <entry key="admin">
+          <value>
+            <Config>
+              <option name="comment" value="true" />
+              <option name="daoMvnPath" value="src/main/java" />
+              <option name="daoName" value="AdminDao" />
+              <option name="daoPackage" value="com.system.backgroundmanagement.dao" />
+              <option name="daoPostfix" value="Dao" />
+              <option name="modelMvnPath" value="src/main/java" />
+              <option name="modelName" value="Admin" />
+              <option name="modelPackage" value="com.system.backgroundmanagement.entity" />
+              <option name="name" value="admin" />
+              <option name="overrideJava" value="true" />
+              <option name="overrideXML" value="true" />
+              <option name="primaryKey" value="id" />
+              <option name="projectFolder" value="$PROJECT_DIR$/background-management" />
+              <option name="tableName" value="admin" />
+              <option name="useDAOExtendStyle" value="true" />
+              <option name="useLombokPlugin" value="true" />
+              <option name="useSchemaPrefix" value="true" />
+              <option name="xmlMvnPath" value="src/main/resources" />
+              <option name="xmlPackage" value="mybatis/mapper" />
+            </Config>
+          </value>
+        </entry>
+        <entry key="base_setting">
+          <value>
+            <Config>
+              <option name="comment" value="true" />
+              <option name="daoMvnPath" value="src/main/java" />
+              <option name="daoName" value="BaseSettingDao" />
+              <option name="daoPackage" value="com.system.backgroundmanagement.dao" />
+              <option name="daoPostfix" value="Dao" />
+              <option name="modelMvnPath" value="src/main/java" />
+              <option name="modelName" value="BaseSetting" />
+              <option name="modelPackage" value="com.system.backgroundmanagement.entity" />
+              <option name="name" value="base_setting" />
+              <option name="overrideJava" value="true" />
+              <option name="overrideXML" value="true" />
+              <option name="primaryKey" value="id" />
+              <option name="projectFolder" value="$PROJECT_DIR$/background-management" />
+              <option name="tableName" value="base_setting" />
+              <option name="useLombokPlugin" value="true" />
+              <option name="useSchemaPrefix" value="true" />
+              <option name="xmlMvnPath" value="src/main/resources" />
+              <option name="xmlPackage" value="mybatis/mapper" />
+            </Config>
+          </value>
+        </entry>
+        <entry key="column">
+          <value>
+            <Config>
+              <option name="comment" value="true" />
+              <option name="daoMvnPath" value="src/main/java" />
+              <option name="daoName" value="ColumnDao" />
+              <option name="daoPackage" value="com.system.backgroundmanagement.dao" />
+              <option name="daoPostfix" value="Dao" />
+              <option name="modelMvnPath" value="src/main/java" />
+              <option name="modelName" value="Column" />
+              <option name="modelPackage" value="com.system.backgroundmanagement.entity" />
+              <option name="name" value="column" />
+              <option name="overrideJava" value="true" />
+              <option name="overrideXML" value="true" />
+              <option name="primaryKey" value="id" />
+              <option name="projectFolder" value="$PROJECT_DIR$/background-management" />
+              <option name="tableName" value="column" />
+              <option name="useLombokPlugin" value="true" />
+              <option name="useSchemaPrefix" value="true" />
+              <option name="xmlMvnPath" value="src/main/resources" />
+              <option name="xmlPackage" value="mybatis/mapper" />
+            </Config>
+          </value>
+        </entry>
+        <entry key="column_type">
+          <value>
+            <Config>
+              <option name="comment" value="true" />
+              <option name="daoMvnPath" value="src/main/java" />
+              <option name="daoName" value="ColumnTypeDao" />
+              <option name="daoPackage" value="com.system.backgroundmanagement.dao" />
+              <option name="daoPostfix" value="Dao" />
+              <option name="modelMvnPath" value="src/main/java" />
+              <option name="modelName" value="ColumnType" />
+              <option name="modelPackage" value="com.system.backgroundmanagement.entity" />
+              <option name="name" value="column_type" />
+              <option name="overrideJava" value="true" />
+              <option name="overrideXML" value="true" />
+              <option name="primaryKey" value="id" />
+              <option name="projectFolder" value="$PROJECT_DIR$/background-management" />
+              <option name="tableName" value="column_type" />
+              <option name="useLombokPlugin" value="true" />
+              <option name="useSchemaPrefix" value="true" />
+              <option name="xmlMvnPath" value="src/main/resources" />
+              <option name="xmlPackage" value="mybatis/mapper" />
+            </Config>
+          </value>
+        </entry>
+        <entry key="company_info">
+          <value>
+            <Config>
+              <option name="comment" value="true" />
+              <option name="daoMvnPath" value="src/main/java" />
+              <option name="daoName" value="CompanyInfoDao" />
+              <option name="daoPackage" value="com.system.backgroundmanagement.dao" />
+              <option name="daoPostfix" value="Dao" />
+              <option name="modelMvnPath" value="src/main/java" />
+              <option name="modelName" value="CompanyInfo" />
+              <option name="modelPackage" value="com.system.backgroundmanagement.entity" />
+              <option name="name" value="company_info" />
+              <option name="overrideJava" value="true" />
+              <option name="overrideXML" value="true" />
+              <option name="primaryKey" value="id" />
+              <option name="projectFolder" value="$PROJECT_DIR$/background-management" />
+              <option name="tableName" value="company_info" />
+              <option name="useLombokPlugin" value="true" />
+              <option name="useSchemaPrefix" value="true" />
+              <option name="xmlMvnPath" value="src/main/resources" />
+              <option name="xmlPackage" value="mybatis/mapper" />
+            </Config>
+          </value>
+        </entry>
+        <entry key="login_log">
+          <value>
+            <Config>
+              <option name="comment" value="true" />
+              <option name="daoMvnPath" value="src/main/java" />
+              <option name="daoName" value="LoginLogDao" />
+              <option name="daoPackage" value="com.system.backgroundmanagement.dao" />
+              <option name="daoPostfix" value="Dao" />
+              <option name="modelMvnPath" value="src/main/java" />
+              <option name="modelName" value="LoginLog" />
+              <option name="modelPackage" value="com.system.backgroundmanagement.entity" />
+              <option name="name" value="login_log" />
+              <option name="overrideJava" value="true" />
+              <option name="overrideXML" value="true" />
+              <option name="primaryKey" value="id" />
+              <option name="projectFolder" value="$PROJECT_DIR$/background-management" />
+              <option name="tableName" value="login_log" />
+              <option name="useLombokPlugin" value="true" />
+              <option name="useSchemaPrefix" value="true" />
+              <option name="xmlMvnPath" value="src/main/resources" />
+              <option name="xmlPackage" value="mybatis/mapper" />
+            </Config>
+          </value>
+        </entry>
+        <entry key="message">
+          <value>
+            <Config>
+              <option name="comment" value="true" />
+              <option name="daoMvnPath" value="src/main/java" />
+              <option name="daoName" value="MessageDao" />
+              <option name="daoPackage" value="com.system.backgroundmanagement.dao" />
+              <option name="daoPostfix" value="Dao" />
+              <option name="modelMvnPath" value="src/main/java" />
+              <option name="modelName" value="Message" />
+              <option name="modelPackage" value="com.system.backgroundmanagement.entity" />
+              <option name="name" value="message" />
+              <option name="overrideJava" value="true" />
+              <option name="overrideXML" value="true" />
+              <option name="primaryKey" value="id" />
+              <option name="projectFolder" value="$PROJECT_DIR$/background-management" />
+              <option name="tableName" value="message" />
+              <option name="useLombokPlugin" value="true" />
+              <option name="useSchemaPrefix" value="true" />
+              <option name="xmlMvnPath" value="src/main/resources" />
+              <option name="xmlPackage" value="mybatis/mapper" />
+            </Config>
+          </value>
+        </entry>
+        <entry key="news">
+          <value>
+            <Config>
+              <option name="comment" value="true" />
+              <option name="daoMvnPath" value="src/main/java" />
+              <option name="daoName" value="NewsDao" />
+              <option name="daoPackage" value="com.system.backgroundmanagement.dao" />
+              <option name="daoPostfix" value="Dao" />
+              <option name="modelMvnPath" value="src/main/java" />
+              <option name="modelName" value="News" />
+              <option name="modelPackage" value="com.system.backgroundmanagement.entity" />
+              <option name="name" value="news" />
+              <option name="overrideJava" value="true" />
+              <option name="overrideXML" value="true" />
+              <option name="primaryKey" value="id" />
+              <option name="projectFolder" value="$PROJECT_DIR$/background-management" />
+              <option name="tableName" value="news" />
+              <option name="useLombokPlugin" value="true" />
+              <option name="useSchemaPrefix" value="true" />
+              <option name="xmlMvnPath" value="src/main/resources" />
+              <option name="xmlPackage" value="mybatis/mapper" />
+            </Config>
+          </value>
+        </entry>
+        <entry key="production_info">
+          <value>
+            <Config>
+              <option name="comment" value="true" />
+              <option name="daoMvnPath" value="src/main/java" />
+              <option name="daoName" value="ProductionInfoDao" />
+              <option name="daoPackage" value="com.system.backgroundmanagement.dao" />
+              <option name="daoPostfix" value="Dao" />
+              <option name="modelMvnPath" value="src/main/java" />
+              <option name="modelName" value="ProductionInfo" />
+              <option name="modelPackage" value="com.system.backgroundmanagement.entity" />
+              <option name="name" value="production_info" />
+              <option name="overrideJava" value="true" />
+              <option name="overrideXML" value="true" />
+              <option name="primaryKey" value="id" />
+              <option name="projectFolder" value="$PROJECT_DIR$/background-management" />
+              <option name="tableName" value="production_info" />
+              <option name="useLombokPlugin" value="true" />
+              <option name="useSchemaPrefix" value="true" />
+              <option name="xmlMvnPath" value="src/main/resources" />
+              <option name="xmlPackage" value="mybatis/mapper" />
+            </Config>
+          </value>
+        </entry>
+        <entry key="show_mode">
+          <value>
+            <Config>
+              <option name="comment" value="true" />
+              <option name="daoMvnPath" value="src/main/java" />
+              <option name="daoName" value="ShowModeDao" />
+              <option name="daoPackage" value="com.system.backgroundmanagement.dao" />
+              <option name="daoPostfix" value="Dao" />
+              <option name="modelMvnPath" value="src/main/java" />
+              <option name="modelName" value="ShowMode" />
+              <option name="modelPackage" value="com.system.backgroundmanagement.entity" />
+              <option name="name" value="show_mode" />
+              <option name="overrideJava" value="true" />
+              <option name="overrideXML" value="true" />
+              <option name="primaryKey" value="id" />
+              <option name="projectFolder" value="$PROJECT_DIR$/background-management" />
+              <option name="tableName" value="show_mode" />
+              <option name="useLombokPlugin" value="true" />
+              <option name="useSchemaPrefix" value="true" />
+              <option name="xmlMvnPath" value="src/main/resources" />
+              <option name="xmlPackage" value="mybatis/mapper" />
+            </Config>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

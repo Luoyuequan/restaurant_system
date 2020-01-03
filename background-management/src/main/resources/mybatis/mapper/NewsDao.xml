@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.system.backgroundmanagement.dao.NewsDao">
+  <resultMap id="BaseResultMap" type="com.system.backgroundmanagement.entity.News">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="column_id" jdbcType="BIGINT" property="columnId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="is_checked" jdbcType="BOOLEAN" property="isChecked" />
+    <result column="rank" jdbcType="INTEGER" property="rank" />
+    <result column="img" jdbcType="VARCHAR" property="img" />
+    <result column="is_recoment" jdbcType="BOOLEAN" property="isRecoment" />
+    <result column="is_top" jdbcType="BOOLEAN" property="isTop" />
+    <result column="resume" jdbcType="VARCHAR" property="resume" />
+    <result column="detail_info" jdbcType="VARCHAR" property="detailInfo" />
+    <result column="is_delete" jdbcType="BOOLEAN" property="isDelete" />
+    <result column="create_time" jdbcType="BIGINT" property="createTime" />
+    <result column="update_time" jdbcType="BIGINT" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, column_id, title, is_checked, `rank`, img, is_recoment, is_top, resume, detail_info, 
+    is_delete, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from news
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from news
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.system.backgroundmanagement.entity.News" useGeneratedKeys="true">
+    insert into news (column_id, title, is_checked, 
+      `rank`, img, is_recoment, 
+      is_top, resume, detail_info, 
+      is_delete, create_time, update_time
+      )
+    values (#{columnId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{isChecked,jdbcType=BOOLEAN}, 
+      #{rank,jdbcType=INTEGER}, #{img,jdbcType=VARCHAR}, #{isRecoment,jdbcType=BOOLEAN}, 
+      #{isTop,jdbcType=BOOLEAN}, #{resume,jdbcType=VARCHAR}, #{detailInfo,jdbcType=VARCHAR}, 
+      #{isDelete,jdbcType=BOOLEAN}, #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.system.backgroundmanagement.entity.News" useGeneratedKeys="true">
+    insert into news
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="columnId != null">
+        column_id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="isChecked != null">
+        is_checked,
+      </if>
+      <if test="rank != null">
+        `rank`,
+      </if>
+      <if test="img != null">
+        img,
+      </if>
+      <if test="isRecoment != null">
+        is_recoment,
+      </if>
+      <if test="isTop != null">
+        is_top,
+      </if>
+      <if test="resume != null">
+        resume,
+      </if>
+      <if test="detailInfo != null">
+        detail_info,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="columnId != null">
+        #{columnId,jdbcType=BIGINT},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="isChecked != null">
+        #{isChecked,jdbcType=BOOLEAN},
+      </if>
+      <if test="rank != null">
+        #{rank,jdbcType=INTEGER},
+      </if>
+      <if test="img != null">
+        #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="isRecoment != null">
+        #{isRecoment,jdbcType=BOOLEAN},
+      </if>
+      <if test="isTop != null">
+        #{isTop,jdbcType=BOOLEAN},
+      </if>
+      <if test="resume != null">
+        #{resume,jdbcType=VARCHAR},
+      </if>
+      <if test="detailInfo != null">
+        #{detailInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=BOOLEAN},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.system.backgroundmanagement.entity.News">
+    update news
+    <set>
+      <if test="columnId != null">
+        column_id = #{columnId,jdbcType=BIGINT},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="isChecked != null">
+        is_checked = #{isChecked,jdbcType=BOOLEAN},
+      </if>
+      <if test="rank != null">
+        `rank` = #{rank,jdbcType=INTEGER},
+      </if>
+      <if test="img != null">
+        img = #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="isRecoment != null">
+        is_recoment = #{isRecoment,jdbcType=BOOLEAN},
+      </if>
+      <if test="isTop != null">
+        is_top = #{isTop,jdbcType=BOOLEAN},
+      </if>
+      <if test="resume != null">
+        resume = #{resume,jdbcType=VARCHAR},
+      </if>
+      <if test="detailInfo != null">
+        detail_info = #{detailInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=BOOLEAN},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.system.backgroundmanagement.entity.News">
+    update news
+    set column_id = #{columnId,jdbcType=BIGINT},
+      title = #{title,jdbcType=VARCHAR},
+      is_checked = #{isChecked,jdbcType=BOOLEAN},
+      `rank` = #{rank,jdbcType=INTEGER},
+      img = #{img,jdbcType=VARCHAR},
+      is_recoment = #{isRecoment,jdbcType=BOOLEAN},
+      is_top = #{isTop,jdbcType=BOOLEAN},
+      resume = #{resume,jdbcType=VARCHAR},
+      detail_info = #{detailInfo,jdbcType=VARCHAR},
+      is_delete = #{isDelete,jdbcType=BOOLEAN},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

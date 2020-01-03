@@ -3,7 +3,7 @@
     <!-- 系统项目名 -->
     <property name="APP_NAME" value="frontmanagement"/>
     <!--定义日志输出目录-->
-    <property name="LOG_HOME" value="${catalina.home}/logs"/>
+    <property name="LOG_HOME" value="logs"/>
     <!-- 控制台输出的日志格式 -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
