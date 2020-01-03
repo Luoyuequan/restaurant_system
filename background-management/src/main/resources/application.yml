@@ -1,0 +1,22 @@
+server:
+  port: 9000
+  servlet:
+    context-path: background_manager
+mybatis:
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath:mybatis/mapper/*.xml
+spring:
+  datasource:
+    username: root
+    password: rootadmin
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    database: restaurant_system
+    ip: 127.0.0.1
+    port: 3306
+    serverTimezone: GMT%2B8
+    url: jdbc:mysql://${spring.datasource.ip}:${spring.datasource.port}/${spring.datasource.database}?serverTimezone=${spring.datasource.serverTimezone}&useUnicode=true&characterEncoding=utf8&useSSL=true
+  redis:
+    database: 0
+    host: 127.0.0.1
+    password:
+    port: 6379
