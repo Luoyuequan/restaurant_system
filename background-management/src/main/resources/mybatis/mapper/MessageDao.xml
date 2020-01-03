@@ -1,146 +1,147 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.system.backgroundmanagement.dao.MessageDao">
-  <resultMap id="BaseResultMap" type="com.system.backgroundmanagement.entity.Message">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="tel" jdbcType="VARCHAR" property="tel" />
-    <result column="ip" jdbcType="VARCHAR" property="ip" />
-    <result column="content" jdbcType="VARCHAR" property="content" />
-    <result column="create_time" jdbcType="BIGINT" property="createTime" />
-    <result column="update_time" jdbcType="BIGINT" property="updateTime" />
-    <result column="is_delete" jdbcType="BOOLEAN" property="isDelete" />
-    <result column="is_checked" jdbcType="BOOLEAN" property="isChecked" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, `name`, email, tel, ip, content, create_time, update_time, is_delete, is_checked
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from message
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from message
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.system.backgroundmanagement.entity.Message" useGeneratedKeys="true">
-    insert into message (`name`, email, tel, 
-      ip, content, create_time, 
-      update_time, is_delete, is_checked
-      )
-    values (#{name,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, 
-      #{ip,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, 
-      #{updateTime,jdbcType=BIGINT}, #{isDelete,jdbcType=BOOLEAN}, #{isChecked,jdbcType=BOOLEAN}
-      )
-  </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.system.backgroundmanagement.entity.Message" useGeneratedKeys="true">
-    insert into message
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="name != null">
-        `name`,
-      </if>
-      <if test="email != null">
-        email,
-      </if>
-      <if test="tel != null">
-        tel,
-      </if>
-      <if test="ip != null">
-        ip,
-      </if>
-      <if test="content != null">
-        content,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
-      <if test="isDelete != null">
-        is_delete,
-      </if>
-      <if test="isChecked != null">
-        is_checked,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="email != null">
-        #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="tel != null">
-        #{tel,jdbcType=VARCHAR},
-      </if>
-      <if test="ip != null">
-        #{ip,jdbcType=VARCHAR},
-      </if>
-      <if test="content != null">
-        #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=BIGINT},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=BIGINT},
-      </if>
-      <if test="isDelete != null">
-        #{isDelete,jdbcType=BOOLEAN},
-      </if>
-      <if test="isChecked != null">
-        #{isChecked,jdbcType=BOOLEAN},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.system.backgroundmanagement.entity.Message">
-    update message
-    <set>
-      <if test="name != null">
-        `name` = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="email != null">
-        email = #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="tel != null">
-        tel = #{tel,jdbcType=VARCHAR},
-      </if>
-      <if test="ip != null">
-        ip = #{ip,jdbcType=VARCHAR},
-      </if>
-      <if test="content != null">
-        content = #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=BIGINT},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=BIGINT},
-      </if>
-      <if test="isDelete != null">
-        is_delete = #{isDelete,jdbcType=BOOLEAN},
-      </if>
-      <if test="isChecked != null">
-        is_checked = #{isChecked,jdbcType=BOOLEAN},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.system.backgroundmanagement.entity.Message">
-    update message
-    set `name` = #{name,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR},
-      tel = #{tel,jdbcType=VARCHAR},
-      ip = #{ip,jdbcType=VARCHAR},
-      content = #{content,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=BIGINT},
-      update_time = #{updateTime,jdbcType=BIGINT},
-      is_delete = #{isDelete,jdbcType=BOOLEAN},
-      is_checked = #{isChecked,jdbcType=BOOLEAN}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+    <resultMap id="BaseResultMap" type="com.system.backgroundmanagement.entity.Message">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="tel" jdbcType="VARCHAR" property="tel"/>
+        <result column="ip" jdbcType="VARCHAR" property="ip"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="create_time" jdbcType="BIGINT" property="createTime"/>
+        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+        <result column="is_delete" jdbcType="BOOLEAN" property="isDelete"/>
+        <result column="is_checked" jdbcType="BOOLEAN" property="isChecked"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, `name`, email, tel, ip, content, create_time, update_time, is_delete, is_checked
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from message
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from message
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.system.backgroundmanagement.entity.Message"
+            useGeneratedKeys="true">
+        insert into message (`name`, email, tel,
+                             ip, content, create_time,
+                             update_time, is_delete, is_checked)
+        values (#{name,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR},
+                #{ip,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT},
+                #{updateTime,jdbcType=BIGINT}, #{isDelete,jdbcType=BOOLEAN}, #{isChecked,jdbcType=BOOLEAN})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id"
+            parameterType="com.system.backgroundmanagement.entity.Message" useGeneratedKeys="true">
+        insert into message
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="tel != null">
+                tel,
+            </if>
+            <if test="ip != null">
+                ip,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="isDelete != null">
+                is_delete,
+            </if>
+            <if test="isChecked != null">
+                is_checked,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="tel != null">
+                #{tel,jdbcType=VARCHAR},
+            </if>
+            <if test="ip != null">
+                #{ip,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=BIGINT},
+            </if>
+            <if test="isDelete != null">
+                #{isDelete,jdbcType=BOOLEAN},
+            </if>
+            <if test="isChecked != null">
+                #{isChecked,jdbcType=BOOLEAN},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.system.backgroundmanagement.entity.Message">
+        update message
+        <set>
+            <if test="name != null">
+                `name` = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="tel != null">
+                tel = #{tel,jdbcType=VARCHAR},
+            </if>
+            <if test="ip != null">
+                ip = #{ip,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=BIGINT},
+            </if>
+            <if test="isDelete != null">
+                is_delete = #{isDelete,jdbcType=BOOLEAN},
+            </if>
+            <if test="isChecked != null">
+                is_checked = #{isChecked,jdbcType=BOOLEAN},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.system.backgroundmanagement.entity.Message">
+        update message
+        set `name`      = #{name,jdbcType=VARCHAR},
+            email       = #{email,jdbcType=VARCHAR},
+            tel         = #{tel,jdbcType=VARCHAR},
+            ip          = #{ip,jdbcType=VARCHAR},
+            content     = #{content,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=BIGINT},
+            update_time = #{updateTime,jdbcType=BIGINT},
+            is_delete   = #{isDelete,jdbcType=BOOLEAN},
+            is_checked  = #{isChecked,jdbcType=BOOLEAN}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
 </mapper>

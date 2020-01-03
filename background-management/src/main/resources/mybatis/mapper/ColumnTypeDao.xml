@@ -1,52 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.system.backgroundmanagement.dao.ColumnTypeDao">
-  <resultMap id="BaseResultMap" type="com.system.backgroundmanagement.entity.ColumnType">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="value" jdbcType="VARCHAR" property="value" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, `value`
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from column_type
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from column_type
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.system.backgroundmanagement.entity.ColumnType" useGeneratedKeys="true">
-    insert into column_type (`value`)
-    values (#{value,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.system.backgroundmanagement.entity.ColumnType" useGeneratedKeys="true">
-    insert into column_type
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="value != null">
-        `value`,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="value != null">
-        #{value,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.system.backgroundmanagement.entity.ColumnType">
-    update column_type
-    <set>
-      <if test="value != null">
-        `value` = #{value,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.system.backgroundmanagement.entity.ColumnType">
-    update column_type
-    set `value` = #{value,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+    <resultMap id="BaseResultMap" type="com.system.backgroundmanagement.entity.ColumnType">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="value" jdbcType="VARCHAR" property="value"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, `value`
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from column_type
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from column_type
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id"
+            parameterType="com.system.backgroundmanagement.entity.ColumnType" useGeneratedKeys="true">
+        insert into column_type (`value`)
+        values (#{value,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id"
+            parameterType="com.system.backgroundmanagement.entity.ColumnType" useGeneratedKeys="true">
+        insert into column_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="value != null">
+                `value`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="value != null">
+                #{value,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.system.backgroundmanagement.entity.ColumnType">
+        update column_type
+        <set>
+            <if test="value != null">
+                `value` = #{value,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.system.backgroundmanagement.entity.ColumnType">
+        update column_type
+        set `value` = #{value,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>
