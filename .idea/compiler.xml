@@ -13,6 +13,7 @@
     <bytecodeTargetLevel>
       <module name="cms" target="1.7" />
       <module name="foreground" target="1.8" />
+      <module name="restaurant_system" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

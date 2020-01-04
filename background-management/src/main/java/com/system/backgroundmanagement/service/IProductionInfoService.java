@@ -1,6 +1,7 @@
 package com.system.backgroundmanagement.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.system.backgroundmanagement.common.ReturnVO;
 import com.system.backgroundmanagement.entity.ProductionInfo;
 
 /**
@@ -13,4 +14,11 @@ import com.system.backgroundmanagement.entity.ProductionInfo;
  */
 public interface IProductionInfoService extends IService<ProductionInfo> {
 
+    ReturnVO saveProInfo(ProductionInfo proInfo);
+
+    ReturnVO delProInfo(Long id);
+
+    ReturnVO listProInfo();
+
+    ReturnVO updateProInfo(ProductionInfo proInfo);
 }
