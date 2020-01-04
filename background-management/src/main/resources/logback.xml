@@ -18,7 +18,7 @@
             <pattern>${pattern}</pattern>
             <charset>${charset}</charset>
         </encoder>
-        <file>${LOG_HOME}/info/${APP_NAME}_%d{yyyy-MM-dd}.log</file>
+        <file>${LOG_HOME}/info/${APP_NAME}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
             <fileNamePattern>${LOG_HOME}/info/${APP_NAME}_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
         </rollingPolicy>
