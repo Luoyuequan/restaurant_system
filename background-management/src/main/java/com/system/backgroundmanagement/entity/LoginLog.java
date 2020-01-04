@@ -1,34 +1,51 @@
 package com.system.backgroundmanagement.entity;
 
-import lombok.*;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
 /**
- * login_log
+ * <p>
+ * 登录日志
+ * </p>
  *
- * @author
+ * @author luoyuequan
+ * @since 2020-01-04
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@RequiredArgsConstructor(staticName = "of")
+@TableName("login_log")
 public class LoginLog implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    @NonNull
+
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
+
     /**
      * 管理员id
      */
+    @TableField("admin_id")
     private Long adminId;
+
     /**
      * 登录IP
      */
+    @TableField("ip")
     private String ip;
+
     /**
      * 登录时间戳
      */
-    private Long loginTime = System.currentTimeMillis();
+    @TableField("login_time")
+    private Long loginTime;
+
+
 }

@@ -1,42 +1,63 @@
 package com.system.backgroundmanagement.entity;
 
-import lombok.*;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
 /**
- * admin
+ * <p>
+ * 管理员模块
+ * </p>
  *
- * @author
+ * @author luoyuequan
+ * @since 2020-01-04
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@RequiredArgsConstructor(staticName = "of")
+@TableName("admin")
 public class Admin implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    @NonNull
+
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
+
     /**
      * 账号
      */
+    @TableField("username")
     private String username;
+
     /**
      * 加密:密码+盐
      */
+    @TableField("password")
     private String password;
+
     /**
      * 盐
      */
+    @TableField("salt")
     private String salt;
+
     /**
      * 创建时间
      */
-    private Long createTime = System.currentTimeMillis();
+    @TableField("create_time")
+    private Long createTime;
+
     /**
      * 修改时间
      */
-    private Long updateTime = System.currentTimeMillis();
+    @TableField("update_time")
+    private Long updateTime;
+
+
 }

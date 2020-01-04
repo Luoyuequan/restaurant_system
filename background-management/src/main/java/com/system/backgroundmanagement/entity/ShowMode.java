@@ -1,35 +1,54 @@
 package com.system.backgroundmanagement.entity;
 
-import lombok.*;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
 /**
- * show_mode
+ * <p>
+ * 显示模式
+ * </p>
  *
- * @author luo
+ * @author luoyuequan
+ * @since 2020-01-04
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@RequiredArgsConstructor(staticName = "of")
+@TableName("show_mode")
 public class ShowMode implements Serializable {
+
     private static final long serialVersionUID = 1L;
+
     /**
      * 显示模式id
      */
-    @NonNull
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
+
     /**
      * 模板
      */
+    @TableField("type")
     private String type;
+
     /**
      * 模板
      */
+    @TableField("template")
     private String template;
-    private Long createTime = System.currentTimeMillis();
-    private Long updateTime = System.currentTimeMillis();
+
+    @TableField("create_time")
+    private Long createTime;
+
+    @TableField("update_time")
+    private Long updateTime;
+
+
 }

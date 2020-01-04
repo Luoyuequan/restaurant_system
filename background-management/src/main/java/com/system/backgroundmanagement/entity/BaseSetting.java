@@ -1,30 +1,45 @@
 package com.system.backgroundmanagement.entity;
 
-import lombok.*;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
 /**
- * base_setting
+ * <p>
+ * 网站基本设置
+ * </p>
  *
- * @author
+ * @author luoyuequan
+ * @since 2020-01-04
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@RequiredArgsConstructor(staticName = "of")
+@TableName("base_setting")
 public class BaseSetting implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    @NonNull
+
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
+
     /**
      * 创建时间戳
      */
-    private Long createTime = System.currentTimeMillis();
+    @TableField("create_time")
+    private Long createTime;
+
     /**
      * 修改时间戳
      */
-    private Long updateTime = System.currentTimeMillis();
+    @TableField("update_time")
+    private Long updateTime;
+
+
 }

@@ -1,55 +1,84 @@
 package com.system.frontmanagement.entity;
 
-import lombok.*;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
 /**
- * message
+ * <p>
+ * 留言表
+ * </p>
  *
- * @author
+ * @author luoyuequan
+ * @since 2020-01-04
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@RequiredArgsConstructor(staticName = "of")
+@TableName("message")
 public class Message implements Serializable {
+
     private static final long serialVersionUID = 1L;
+
     /**
      * 留言消息id
      */
-    @NonNull
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
+
     /**
      * 称呼
      */
+    @TableField("name")
     private String name;
+
     /**
      * 电子邮件
      */
+    @TableField("email")
     private String email;
+
     /**
      * 联系电话
      */
+    @TableField("tel")
     private String tel;
+
     /**
      * ip
      */
+    @TableField("ip")
     private String ip;
+
     /**
      * 留言内容
      */
+    @TableField("content")
     private String content;
+
     /**
      * 创建时间
      */
-    private Long createTime = System.currentTimeMillis();
+    @TableField("create_time")
+    private Long createTime;
+
     /**
      * 修改时间
      */
-    private Long updateTime = System.currentTimeMillis();
-    private Boolean isDelete;
-    private Boolean isChecked;
+    @TableField("update_time")
+    private Long updateTime;
+
+    @TableField("is_delete")
+    private Boolean delete;
+
+    @TableField("is_checked")
+    private Boolean checked;
+
+
 }
