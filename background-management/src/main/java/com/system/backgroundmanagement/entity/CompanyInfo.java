@@ -27,6 +27,12 @@ public class CompanyInfo implements Serializable {
     private Long id;
 
     /**
+     * 公司名字
+     */
+    @TableField("name")
+    private String name;
+
+    /**
      * 公司介绍
      */
     @TableField("content")

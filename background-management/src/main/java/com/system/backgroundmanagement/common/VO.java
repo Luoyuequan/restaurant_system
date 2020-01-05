@@ -15,6 +15,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 public class VO {
+    private Long id;
     private Integer page;
     private Integer size;
     private String name;
