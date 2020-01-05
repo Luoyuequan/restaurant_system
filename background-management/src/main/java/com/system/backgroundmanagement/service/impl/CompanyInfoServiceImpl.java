@@ -40,7 +40,6 @@ public class CompanyInfoServiceImpl extends ServiceImpl<CompanyInfoDao, CompanyI
 
     @Override
     public boolean updateCompanyInfo(CompanyInfo companyInfo) {
-
         AtomicBoolean removeResult = new AtomicBoolean(false);
         try {
             UpdateWrapper<CompanyInfo> updateWrapper = new UpdateWrapper<>();

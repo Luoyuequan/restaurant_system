@@ -2,7 +2,10 @@ package com.system.backgroundmanagement.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.system.backgroundmanagement.common.ReturnVO;
+import com.system.backgroundmanagement.common.VO;
 import com.system.backgroundmanagement.entity.ProductionInfo;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,11 +17,24 @@ import com.system.backgroundmanagement.entity.ProductionInfo;
  */
 public interface IProductionInfoService extends IService<ProductionInfo> {
 
-    ReturnVO saveProInfo(ProductionInfo proInfo);
 
-    ReturnVO delProInfo(Long id);
+    /**
+     * @param vo
+     * @return
+     */
+    ReturnVO listProInfo(VO vo);
 
-    ReturnVO listProInfo();
+    /**
+     * @param proInfo
+     * @return
+     */
+    boolean updateProInfo(ProductionInfo proInfo);
 
-    ReturnVO updateProInfo(ProductionInfo proInfo);
+    /**
+     * 根据id集合批量删除产品信息
+     *
+     * @param idList
+     * @return
+     */
+    boolean deleteByIds(List<Long> idList);
 }

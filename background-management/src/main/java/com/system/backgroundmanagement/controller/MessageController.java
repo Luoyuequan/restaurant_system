@@ -1,8 +1,8 @@
 package com.system.backgroundmanagement.controller;
 
 
-import com.system.backgroundmanagement.common.ArraysUtils;
 import com.system.backgroundmanagement.common.MessageEnum;
+import com.system.backgroundmanagement.common.ParamCheckUtils;
 import com.system.backgroundmanagement.common.ReturnVO;
 import com.system.backgroundmanagement.common.VO;
 import com.system.backgroundmanagement.entity.Message;
@@ -12,7 +12,6 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -101,25 +100,10 @@ public class MessageController {
             dataTypeClass = String.class, required = true
     )
     public ReturnVO deleteMessage(@NotNull @PathVariable String ids) {
-        String[] strings = ids.split(",");
-        //接收的参数是否缺少
-        if (ArraysUtils.isEmpty(strings)) {
-            return ReturnVO.error(MessageEnum.VARIABLE_MISS_ERROR);
-        }
-        //转型为Long并且校验接收的参数格式是否非法
         List<Long> idList = new ArrayList<>();
-        for (String s : strings) {
-            try {
-                Long id = Long.valueOf(s);
-                idList.add(id);
-            } catch (NumberFormatException e) {
-                log.warn("批量删除,含有非法数字格式id:{}", s, e.getCause());
-                return ReturnVO.error(MessageEnum.VARIABLE_INVALID_ERROR);
-            }
-        }
-        //校验转型后的参数是否为空
-        if (CollectionUtils.isEmpty(idList)) {
-            return ReturnVO.error(MessageEnum.VARIABLE_MISS_ERROR);
+        ReturnVO checkResult = ParamCheckUtils.checkBatchIds(ids, idList);
+        if (checkResult != null) {
+            return checkResult;
         }
         //根据id批量删除
         return messageService.deleteByIds(idList) ?
