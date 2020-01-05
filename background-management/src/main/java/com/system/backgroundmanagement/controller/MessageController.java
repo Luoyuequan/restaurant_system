@@ -1,15 +1,23 @@
 package com.system.backgroundmanagement.controller;
 
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.system.backgroundmanagement.common.ArraysUtils;
 import com.system.backgroundmanagement.common.MessageEnum;
 import com.system.backgroundmanagement.common.ReturnVO;
+import com.system.backgroundmanagement.common.VO;
 import com.system.backgroundmanagement.entity.Message;
 import com.system.backgroundmanagement.service.IMessageService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * <p>
@@ -20,6 +28,7 @@ import java.util.Map;
  * @since 2020-01-04
  */
 @RestController
+@Api(tags = "留言消息管理接口")
 @RequestMapping("/message")
 @Slf4j
 public class MessageController {
@@ -30,50 +39,90 @@ public class MessageController {
     }
 
     /**
-     * 游客留言请求接口
+     * 游客留言添加请求接口
      *
      * @param message 消息体
      * @return vo
      */
     @PostMapping("add")
-    public ReturnVO save(@RequestBody Message message) {
+    @ApiOperation("游客留言添加请求接口")
+    @ApiImplicitParam(name = "message", value = "留言消息体", dataTypeClass = Message.class, required = true)
+    public ReturnVO save(@NotNull @RequestBody Message message) {
+        //校验新增的留言消息的非空参数是否符合
         boolean checked = message.getName() == null || message.getContent() == null;
         if (checked) {
             return ReturnVO.error(MessageEnum.VARIABLE_MISS_ERROR);
         }
-        return messageService.saveMessage(message);
+        AtomicBoolean saveResult = new AtomicBoolean(false);
+        try {
+            saveResult.set(messageService.save(message));
+        } catch (Exception e) {
+            log.warn("留言消息添加异常,{}", message, e.getCause());
+        }
+        return saveResult.get() ? ReturnVO.success(MessageEnum.ADD_SUCCESS) : ReturnVO.success(MessageEnum.ADD_ERROR);
     }
 
     /**
-     * 获取留言表和分页接口
+     * 根据分页和关键字查询(非必须)
+     * 获取留言列表接口
      *
-     * @param messagePage
-     * @return
+     * @param vo 请求参数(包含分页,关键字查询)
+     * @return vo
      */
     @GetMapping("list")
-    public ReturnVO list(@RequestBody Page<Message> messagePage) {
-        return messageService.listMessage(messagePage);
+    @ApiOperation("根据分页和关键字查询获取留言列表接口")
+    public ReturnVO list(VO vo) {
+        return messageService.listMessage(vo);
     }
 
     /**
-     * 对留言列表进行关键字搜索接口
+     * 获取指定id留言消息
      *
-     * @param map
-     * @return
+     * @param id id
+     * @return vo
      */
-    @PostMapping("search")
-    public ReturnVO search(@RequestBody Map map) {
-        return messageService.searchList(map);
+    @GetMapping("get/{id}")
+    @ApiOperation("获取指定id留言消息")
+    @ApiImplicitParam(name = "id", value = "留言消息id", dataTypeClass = Long.class)
+    public ReturnVO getById(@PathVariable Long id) {
+        Message message = messageService.getById(id);
+        return ReturnVO.success(MessageEnum.FIND_SUCCESS, message);
     }
 
     /**
-     * 删除指定id留言记录接口
+     * 删除指定id集合的留言记录接口
      *
-     * @param id
-     * @return
+     * @param ids 请求参数(多个id由英文逗号拼接成字符串)
+     * @return vo
      */
-    @DeleteMapping("del/{id}")
-    public ReturnVO deleteMessage(@PathVariable Long id) {
-        return messageService.deleteMessage(id);
+    @DeleteMapping("del/{ids}")
+    @ApiOperation("删除指定id集合的留言记录接口")
+    @ApiImplicitParam(name = "ids", value = "请求参数(多个id由英文逗号拼接成字符串)",
+            dataTypeClass = String.class, required = true
+    )
+    public ReturnVO deleteMessage(@NotNull @PathVariable String ids) {
+        String[] strings = ids.split(",");
+        //接收的参数是否缺少
+        if (ArraysUtils.isEmpty(strings)) {
+            return ReturnVO.error(MessageEnum.VARIABLE_MISS_ERROR);
+        }
+        //转型为Long并且校验接收的参数格式是否非法
+        List<Long> idList = new ArrayList<>();
+        for (String s : strings) {
+            try {
+                Long id = Long.valueOf(s);
+                idList.add(id);
+            } catch (NumberFormatException e) {
+                log.warn("批量删除,含有非法数字格式id:{}", s, e.getCause());
+                return ReturnVO.error(MessageEnum.VARIABLE_INVALID_ERROR);
+            }
+        }
+        //校验转型后的参数是否为空
+        if (CollectionUtils.isEmpty(idList)) {
+            return ReturnVO.error(MessageEnum.VARIABLE_MISS_ERROR);
+        }
+        //根据id批量删除
+        return messageService.deleteByIds(idList) ?
+                ReturnVO.success(MessageEnum.DELETE_SUCCESS) : ReturnVO.success(MessageEnum.DELETE_ERROR);
     }
 }

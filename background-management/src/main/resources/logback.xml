@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <!-- 系统项目名 -->
-    <property name="APP_NAME" value="backgroundmanagement"/>
+    <property name="APP_NAME" value="background-management"/>
     <!--定义日志输出目录-->
-    <property name="LOG_HOME" value="logs"/>
+    <property name="LOG_HOME" value="background-management/logs"/>
     <property name="pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
     <property name="charset" value="utf-8"/>
     <!-- 控制台输出的日志格式 -->
@@ -13,6 +13,7 @@
             <charset>${charset}</charset>
         </encoder>
     </appender>
+    <!-- 输出 info log 至统一日志文件中 -->
     <appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <encoder>
             <pattern>${pattern}</pattern>
@@ -32,6 +33,21 @@
             <onMatch>ACCEPT</onMatch>
             <onMismatch>DENY</onMismatch>
         </filter>
+    </appender>
+    <!-- 输出 sql log 至统一日志文件中 -->
+    <appender name="SQL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>${pattern}</pattern>
+            <charset>${charset}</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/sql/${APP_NAME}_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- 根据日志文件按天回滚，保存时间为30天，30天之前的都将被清理掉 -->
+            <maxHistory>7</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
     </appender>
     <!-- 输出error log 至统一日志文件中 -->
     <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -54,10 +70,10 @@
             <onMismatch>DENY</onMismatch>
         </filter>
     </appender>
-    <!-- 输出 war log 至统一日志文件中 -->
+    <!-- 输出 warn log 至统一日志文件中 -->
     <appender name="WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_HOME}/war/${APP_NAME}_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_HOME}/warn/${APP_NAME}_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <!-- 根据日志文件按天回滚，保存时间为30天，30天之前的都将被清理掉 -->
             <maxHistory>30</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -70,16 +86,15 @@
         </encoder>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <!-- 只打印WAR日志 -->
-            <level>WAR</level>
+            <level>WARN</level>
             <onMatch>ACCEPT</onMatch>
             <onMismatch>DENY</onMismatch>
         </filter>
     </appender>
-    <!-- MyBatis日志输出设置 -->
-    <logger name="com.system.backgroundmanagement.**.mapper" level="DEBUG" additivity="false">
-        <level value="DEBUG"/>
+    <!-- MyBatis sql 日志输出设置 -->
+    <logger name="com.system.backgroundmanagement.dao" level="DEBUG" additivity="false">
         <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="INFO"/>
+        <appender-ref ref="SQL"/>
     </logger>
     <!-- war级别日志 -->
     <logger name="com.system.backgroundmanagement" level="WARN" additivity="false">
@@ -93,10 +108,16 @@
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="ERROR"/>
     </logger>
-    <root level="INFO">
+    <!-- info 级别日志 -->
+    <logger name="com.system.backgroundmanagement" level="INFO" additivity="false">
+        <level value="INFO"/>
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="INFO"/>
+    </logger>
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="ERROR"/>
-        <appender-ref ref="WAR"/>
+        <appender-ref ref="WARN"/>
+        <!--        <appender-ref ref="INFO"/>-->
     </root>
 </configuration>

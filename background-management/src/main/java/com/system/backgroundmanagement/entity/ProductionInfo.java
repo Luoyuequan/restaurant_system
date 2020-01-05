@@ -1,9 +1,6 @@
 package com.system.backgroundmanagement.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -53,11 +50,12 @@ public class ProductionInfo implements Serializable {
     @TableField("img")
     private String img;
 
+    // TODO: 2020/01/05 产品信息表的字段is_recomend改成is_recommend
     /**
      * 是否推荐，0未，1已
      */
-    @TableField("is_recoment")
-    private Boolean recoment;
+    @TableField("is_recommend")
+    private Boolean recommend;
 
     /**
      * 是否置顶，0未，1已
@@ -80,13 +78,20 @@ public class ProductionInfo implements Serializable {
     /**
      * 是否已删除，0未，1已
      */
-    @TableField("is_delete")
-    private Boolean delete;
+    @TableField("is_deleted")
+    @TableLogic
+    private Boolean deleted;
 
-    @TableField("create_time")
+    /**
+     * 创建时间
+     */
+    @TableField(value = "create_time", fill = FieldFill.INSERT)
     private Long createTime;
 
-    @TableField("update_time")
+    /**
+     * 修改时间
+     */
+    @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
     private Long updateTime;
 
 

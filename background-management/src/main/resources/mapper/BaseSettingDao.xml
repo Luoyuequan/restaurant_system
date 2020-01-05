@@ -3,7 +3,7 @@
 <mapper namespace="com.system.backgroundmanagement.dao.BaseSettingDao">
 
     <!-- 开启二级缓存 -->
-    <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
+    <cache/>
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.system.backgroundmanagement.entity.BaseSetting">

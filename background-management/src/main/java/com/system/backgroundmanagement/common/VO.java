@@ -14,7 +14,16 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class Page {
+public class VO {
     private Integer page;
     private Integer size;
+    private String name;
+    private String title;
+    private Boolean recommend;
+    private Boolean top;
+
+    {
+        this.page = 1;
+        this.size = 10;
+    }
 }

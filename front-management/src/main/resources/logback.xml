@@ -3,7 +3,7 @@
     <!-- 系统项目名 -->
     <property name="APP_NAME" value="frontmanagement"/>
     <!--定义日志输出目录-->
-    <property name="LOG_HOME" value="front-management/logs"/>
+    <property name="LOG_HOME" value="frontmanagement/logs"/>
     <property name="pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
     <property name="charset" value="utf-8"/>
     <!-- 控制台输出的日志格式 -->
@@ -13,21 +13,28 @@
             <charset>${charset}</charset>
         </encoder>
     </appender>
-    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <encoder>
             <pattern>${pattern}</pattern>
             <charset>${charset}</charset>
         </encoder>
-        <!--        <file>${LOG_HOME}/info/${APP_NAME}.log</file>-->
-        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOG_HOME}/info/${APP_NAME}_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- 根据日志文件按天回滚，保存时间为30天，30天之前的都将被清理掉 -->
+            <maxHistory>7</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
-        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <MaxFileSize>5MB</MaxFileSize>
-        </triggeringPolicy>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!-- 只打印 INFO 日志 -->
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
     </appender>
     <!-- 输出error log 至统一日志文件中 -->
-    <appender name="ERRORAPPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOG_HOME}/error/${APP_NAME}_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <!-- 根据日志文件按天回滚，保存时间为30天，30天之前的都将被清理掉 -->
@@ -47,10 +54,10 @@
             <onMismatch>DENY</onMismatch>
         </filter>
     </appender>
-    <!-- 输出 war log 至统一日志文件中 -->
-    <appender name="WARAPPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!-- 输出 warn log 至统一日志文件中 -->
+    <appender name="WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_HOME}/war/${APP_NAME}_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_HOME}/warn/${APP_NAME}_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <!-- 根据日志文件按天回滚，保存时间为30天，30天之前的都将被清理掉 -->
             <maxHistory>30</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -63,31 +70,33 @@
         </encoder>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <!-- 只打印WAR日志 -->
-            <level>WAR</level>
+            <level>WARN</level>
             <onMatch>ACCEPT</onMatch>
             <onMismatch>DENY</onMismatch>
         </filter>
     </appender>
     <!-- MyBatis日志输出设置 -->
-    <logger name="com.system.frontmanagement.**.mapper" level="DEBUG" additivity="true">
+    <logger name="com.system.frontmanagement.**.mapper" level="DEBUG" additivity="false">
         <level value="DEBUG"/>
         <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="FILE"/>
+        <appender-ref ref="INFO"/>
     </logger>
-    <logger name="com.system.frontmanagement" level="WAR" additivity="true">
-        <level value="WAR"/>
+    <!-- war级别日志 -->
+    <logger name="com.system.frontmanagement" level="WARN" additivity="false">
+        <level value="WARN"/>
         <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="WARAPPENDER"/>
+        <appender-ref ref="WARN"/>
     </logger>
-    <logger name="com.system.frontmanagement" level="ERROR" additivity="true">
+    <!-- error级别日志 -->
+    <logger name="com.system.frontmanagement" level="ERROR" additivity="false">
         <level value="ERROR"/>
         <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="ERRORAPPENDER"/>
+        <appender-ref ref="ERROR"/>
     </logger>
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
-        <!--        <appender-ref ref="FILE"/>-->
-        <appender-ref ref="ERRORAPPENDER"/>
-        <appender-ref ref="WARAPPENDER"/>
+        <appender-ref ref="INFO"/>
+        <appender-ref ref="ERROR"/>
+        <appender-ref ref="WARN"/>
     </root>
 </configuration>

@@ -1,11 +1,12 @@
 package com.system.backgroundmanagement.service;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.system.backgroundmanagement.common.ReturnVO;
+import com.system.backgroundmanagement.common.VO;
 import com.system.backgroundmanagement.entity.Message;
 
-import java.util.Map;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * <p>
@@ -17,11 +18,20 @@ import java.util.Map;
  */
 public interface IMessageService extends IService<Message> {
 
-    ReturnVO saveMessage(Message message);
+    /**
+     * 根据获取留言消息列表
+     *
+     * @param vo
+     * @return
+     */
+    ReturnVO listMessage(VO vo);
 
-    ReturnVO listMessage(Page<Message> messagePage);
-
-    ReturnVO searchList(Map map);
-
-    ReturnVO deleteMessage(Long id);
+    /**
+     * 根据id删除留言消息
+     * 可批量删除
+     *
+     * @param idList
+     * @return
+     */
+    boolean deleteByIds(@NotNull List<Long> idList);
 }

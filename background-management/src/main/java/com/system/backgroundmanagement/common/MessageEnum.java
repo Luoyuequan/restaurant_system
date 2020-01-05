@@ -25,6 +25,10 @@ public enum MessageEnum {
      */
     DELETE_ERROR(0, "删除失败"),
     /**
+     * 删除成功
+     */
+    DELETE_SUCCESS(1, "删除成功"),
+    /**
      * 查询失败
      */
     FIND_ERROR(0, "查询失败"),

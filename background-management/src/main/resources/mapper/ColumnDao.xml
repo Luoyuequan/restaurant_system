@@ -3,7 +3,7 @@
 <mapper namespace="com.system.backgroundmanagement.dao.ColumnDao">
 
     <!-- 开启二级缓存 -->
-    <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
+    <cache/>
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.system.backgroundmanagement.entity.Column">
@@ -16,12 +16,12 @@
         <result column="icon" property="icon"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
-        <result column="is_delete" property="delete"/>
+        <result column="is_deleted" property="deleted"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, pid, name, en_name, column_type_id, rank, icon, create_time, update_time, is_delete
+        id, pid, `name`, en_name, column_type_id, `rank`, icon, create_time, update_time, is_deleted
     </sql>
 
 </mapper>

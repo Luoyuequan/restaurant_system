@@ -22,7 +22,7 @@ public class ProductionInfoController {
     @Autowired
     IProductionInfoService proInfoService;
 
-    @PutMapping("add")
+    @PostMapping("add")
     public ReturnVO saveProInfo(@RequestBody ProductionInfo proInfo) {
         return proInfoService.saveProInfo(proInfo);
     }
@@ -37,7 +37,7 @@ public class ProductionInfoController {
         return proInfoService.listProInfo();
     }
 
-    @PostMapping("update")
+    @PutMapping("update")
     public ReturnVO updateProInfo(@RequestBody ProductionInfo proInfo) {
         return proInfoService.updateProInfo(proInfo);
     }

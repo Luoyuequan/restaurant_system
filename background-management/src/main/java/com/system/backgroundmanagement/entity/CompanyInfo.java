@@ -1,9 +1,6 @@
 package com.system.backgroundmanagement.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -41,10 +38,16 @@ public class CompanyInfo implements Serializable {
     @TableField("tel")
     private String tel;
 
-    @TableField("create_time")
+    /**
+     * 创建时间
+     */
+    @TableField(value = "create_time", fill = FieldFill.INSERT)
     private Long createTime;
 
-    @TableField("update_time")
+    /**
+     * 修改时间
+     */
+    @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
     private Long updateTime;
 
 

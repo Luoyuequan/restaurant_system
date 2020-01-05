@@ -89,7 +89,7 @@ public class CodeGenerate {
         dsc.setDbType(DbType.MYSQL);
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
-        dsc.setPassword("rootadmin");
+        dsc.setPassword("root");
         mpg.setDataSource(dsc);
 
         // 包配置
@@ -171,12 +171,12 @@ public class CodeGenerate {
         strategy.setControllerMappingHyphenStyle(true);
         //是否生成实体时，生成字段注解
         strategy.setEntityTableFieldAnnotationEnable(true);
-        //乐观锁属性名称
-        strategy.setVersionFieldName("updateTime");
+        //乐观锁属性名称 此处值为表的字段名
+        strategy.setVersionFieldName("update_time");
         //boolean类型字段是否移除is前缀
         strategy.setEntityBooleanColumnRemoveIsPrefix(true);
-        //设置逻辑删除属性字段
-        strategy.setLogicDeleteFieldName("delete");
+        //设置逻辑删除属性字段 此处指为表的字段名
+        strategy.setLogicDeleteFieldName("is_deleted");
         //表前缀
         strategy.setTablePrefix(pc.getModuleName() + "_");
         mpg.setStrategy(strategy);

@@ -3,7 +3,7 @@
 <mapper namespace="com.system.backgroundmanagement.dao.ProductionInfoDao">
 
     <!-- 开启二级缓存 -->
-    <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
+    <cache/>
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.system.backgroundmanagement.entity.ProductionInfo">
@@ -13,18 +13,18 @@
         <result column="is_checked" property="checked"/>
         <result column="rank" property="rank"/>
         <result column="img" property="img"/>
-        <result column="is_recoment" property="recoment"/>
+        <result column="is_recommend" property="recommend"/>
         <result column="is_top" property="top"/>
         <result column="resume" property="resume"/>
         <result column="detail_info" property="detailInfo"/>
-        <result column="is_delete" property="delete"/>
+        <result column="is_deleted" property="deleted"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, column_id, title, is_checked, rank, img, is_recoment, is_top, resume, detail_info, is_delete, create_time, update_time
+        id, column_id, title, is_checked, `rank`, img, is_recommend, is_top, `resume`, detail_info, is_delete, create_time, update_time
     </sql>
 
 </mapper>

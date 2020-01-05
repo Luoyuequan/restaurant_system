@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author 罗跃权
  */
 @SpringBootApplication
-@MapperScan("com.system.backgroundmanagement.mapper")
+@MapperScan("com.system.backgroundmanagement.dao")
 public class BackgroundManagementApplication {
 
     public static void main(String[] args) {
