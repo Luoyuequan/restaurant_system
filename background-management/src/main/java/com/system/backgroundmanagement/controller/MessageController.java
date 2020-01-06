@@ -45,11 +45,11 @@ public class MessageController {
     @PostMapping("add")
     @ApiOperation("游客留言添加请求接口")
     @ApiImplicitParam(name = "message", value = "留言消息体", dataTypeClass = Message.class, required = true)
-    public ReturnVO save(@NotNull @RequestBody Message message, HttpServletRequest request) {
+    public ResponseVO save(@NotNull @RequestBody Message message, HttpServletRequest request) {
         //校验新增的留言消息的非空参数是否符合
         boolean checked = message.getName() == null || message.getContent() == null;
         if (checked) {
-            return ReturnVO.error(MessageEnum.VARIABLE_MISS_ERROR);
+            return ResponseVO.error(MessageEnum.VARIABLE_MISS_ERROR);
         }
         AtomicBoolean saveResult = new AtomicBoolean(false);
         try {
@@ -59,68 +59,68 @@ public class MessageController {
         } catch (Exception e) {
             log.warn("留言消息添加异常,{}", message, e.getCause());
         }
-        return saveResult.get() ? ReturnVO.success(MessageEnum.ADD_SUCCESS) : ReturnVO.success(MessageEnum.ADD_ERROR);
+        return saveResult.get() ? ResponseVO.success(MessageEnum.ADD_SUCCESS) : ResponseVO.success(MessageEnum.ADD_ERROR);
     }
 
     /**
      * 根据分页和关键字查询(非必须)
      * 获取留言列表接口
      *
-     * @param pageVO  分页参数
-     * @param vo      请求参数条件
-     * @param request request请求
+     * @param pageVO    分页参数
+     * @param requestVo 请求参数条件
+     * @param request   request请求
      * @return
      */
     @GetMapping("list")
     @ApiOperation("根据分页和关键字查询获取留言列表接口")
-    public ReturnVO list(PageVO pageVO, VO vo, HttpServletRequest request) {
+    public ResponseVO list(PageVO pageVO, RequestVO requestVo, HttpServletRequest request) {
         try {
-            IPage<Message> listMessage = messageService.listMessage(pageVO, vo);
-            return ReturnVO.success(MessageEnum.FIND_SUCCESS, listMessage);
+            IPage<Message> listMessage = messageService.listMessage(pageVO, requestVo);
+            return ResponseVO.success(MessageEnum.FIND_SUCCESS, listMessage);
         } catch (RuntimeException e) {
             log.warn("uri:{},msg:{}", request.getRequestURI(), MessageEnum.FIND_ERROR.getMsg(), e.getCause());
-            return ReturnVO.error(MessageEnum.FIND_ERROR);
+            return ResponseVO.error(MessageEnum.FIND_ERROR);
         }
     }
 
     /**
      * 获取指定id留言消息
      *
-     * @param vo 请求参数(id)
-     * @return vo
+     * @param requestVo 请求参数(id)
+     * @return requestVo
      */
     @GetMapping("get")
     @ApiOperation("获取指定id留言消息")
-    public ReturnVO getById(@NotNull VO vo, HttpServletRequest request) {
-        Long id = vo.getId();
+    public ResponseVO getById(@NotNull RequestVO requestVo, HttpServletRequest request) {
+        Long id = requestVo.getId();
         if (id == null) {
-            return ReturnVO.error(MessageEnum.VARIABLE_MISS_ERROR);
+            return ResponseVO.error(MessageEnum.VARIABLE_MISS_ERROR);
         }
         try {
             Message message = messageService.getById(id);
-            return ReturnVO.success(MessageEnum.FIND_SUCCESS, message);
+            return ResponseVO.success(MessageEnum.FIND_SUCCESS, message);
         } catch (Exception e) {
             log.warn("uri:{},msg:{}", request.getRequestURI(), MessageEnum.FIND_ERROR.getMsg(), e.getCause());
-            return ReturnVO.error(MessageEnum.FIND_ERROR);
+            return ResponseVO.error(MessageEnum.FIND_ERROR);
         }
     }
 
     /**
      * 删除指定id集合的留言记录接口
      *
-     * @param vo 请求参数(多个id由英文逗号拼接成字符串)
-     * @return vo
+     * @param requestVo 请求参数(多个id由英文逗号拼接成字符串)
+     * @return requestVo
      */
     @DeleteMapping("del")
     @ApiOperation("删除指定id集合的留言记录接口")
-    public ReturnVO deleteMessage(@NotNull VO vo) {
+    public ResponseVO deleteMessage(@NotNull RequestVO requestVo) {
         List<Long> idList = new ArrayList<>();
-        ReturnVO checkResult = ParamCheckUtils.checkBatchIds(vo.getIds(), idList);
+        ResponseVO checkResult = ParamCheckUtils.checkBatchIds(requestVo.getIds(), idList);
         if (checkResult != null) {
             return checkResult;
         }
         //根据id批量删除
         return messageService.deleteByIds(idList) ?
-                ReturnVO.success(MessageEnum.DELETE_SUCCESS) : ReturnVO.success(MessageEnum.DELETE_ERROR);
+                ResponseVO.success(MessageEnum.DELETE_SUCCESS) : ResponseVO.success(MessageEnum.DELETE_ERROR);
     }
 }

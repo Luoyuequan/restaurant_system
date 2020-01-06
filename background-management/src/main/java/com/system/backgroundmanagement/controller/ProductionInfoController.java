@@ -40,12 +40,12 @@ public class ProductionInfoController {
      * @return 响应vo
      */
     @PostMapping("add")
-    public ReturnVO saveProInfo(@NotNull @RequestBody ProductionInfo proInfo) {
+    public ResponseVO saveProInfo(@NotNull @RequestBody ProductionInfo proInfo) {
         //校验新增的留言消息的非空参数是否符合
         boolean checked = proInfo.getTitle() == null || proInfo.getColumnId() == null ||
                 proInfo.getRankValue() == null || proInfo.getSimpleInfo() == null;
         if (checked) {
-            return ReturnVO.error(MessageEnum.VARIABLE_MISS_ERROR);
+            return ResponseVO.error(MessageEnum.VARIABLE_MISS_ERROR);
         }
         AtomicBoolean saveResult = new AtomicBoolean(false);
         try {
@@ -53,58 +53,58 @@ public class ProductionInfoController {
         } catch (Exception e) {
             log.warn("产品信息添加异常,{}", proInfo, e.getCause());
         }
-        return saveResult.get() ? ReturnVO.success(MessageEnum.ADD_SUCCESS) : ReturnVO.success(MessageEnum.ADD_ERROR);
+        return saveResult.get() ? ResponseVO.success(MessageEnum.ADD_SUCCESS) : ResponseVO.success(MessageEnum.ADD_ERROR);
     }
 
 
     /**
      * 删除指定id集合的产品信息接口
      *
-     * @param vo 请求参数(多个id由英文逗号拼接成字符串)
-     * @return vo
+     * @param requestVo 请求参数(多个id由英文逗号拼接成字符串)
+     * @return requestVo
      */
     @DeleteMapping("del")
-    public ReturnVO delProInfo(@NotNull VO vo) {
+    public ResponseVO delProInfo(@NotNull RequestVO requestVo) {
         List<Long> idList = new ArrayList<>();
-        ReturnVO checkResult = ParamCheckUtils.checkBatchIds(vo.getIds(), idList);
+        ResponseVO checkResult = ParamCheckUtils.checkBatchIds(requestVo.getIds(), idList);
         if (checkResult != null) {
             return checkResult;
         }
         //根据id批量删除
         return proInfoService.deleteByIds(idList) ?
-                ReturnVO.success(MessageEnum.DELETE_SUCCESS) : ReturnVO.success(MessageEnum.DELETE_ERROR);
+                ResponseVO.success(MessageEnum.DELETE_SUCCESS) : ResponseVO.success(MessageEnum.DELETE_ERROR);
     }
 
     /**
      * 根据 title，recommend，top 筛选分页(非必须)
      * 产品信息列表接口
      *
-     * @param pageVO 分页参数
-     * @param vo     条件查询参数
+     * @param pageVO    分页参数
+     * @param requestVo 条件查询参数
      * @return 响应数据
      */
     @GetMapping("list")
-    public ReturnVO listProInfo(PageVO pageVO, VO vo) {
-        return proInfoService.listProInfo(pageVO, vo);
+    public ResponseVO listProInfo(PageVO pageVO, RequestVO requestVo) {
+        return proInfoService.listProInfo(pageVO, requestVo);
     }
 
     /**
      * 获取指定id留言消息
      *
-     * @param vo 请求参数(id)
-     * @return vo
+     * @param requestVo 请求参数(id)
+     * @return requestVo
      */
     @GetMapping("get")
-    public ReturnVO getProInfo(@NotNull VO vo) {
-        Long id = vo.getId();
+    public ResponseVO getProInfo(@NotNull RequestVO requestVo) {
+        Long id = requestVo.getId();
         if (id == null) {
-            return ReturnVO.error(MessageEnum.VARIABLE_MISS_ERROR);
+            return ResponseVO.error(MessageEnum.VARIABLE_MISS_ERROR);
         }
         ProductionInfo productionInfo = proInfoService.getProInfo(id);
         if (productionInfo == null) {
-            return ReturnVO.success(MessageEnum.DATA_NO);
+            return ResponseVO.success(MessageEnum.DATA_NO);
         }
-        return ReturnVO.success(MessageEnum.FIND_SUCCESS, productionInfo);
+        return ResponseVO.success(MessageEnum.FIND_SUCCESS, productionInfo);
     }
 
     /**
@@ -116,13 +116,13 @@ public class ProductionInfoController {
     @PutMapping("update")
     @ApiOperation("修改产品信息")
     @ApiImplicitParam(name = "companyInfo", value = "公司新的信息")
-    public ReturnVO updateProInfo(@NotNull @RequestBody ProductionInfo proInfo) {
+    public ResponseVO updateProInfo(@NotNull @RequestBody ProductionInfo proInfo) {
         boolean checked = proInfo.getId() == null;
         //接收的参数是否缺少
         if (checked) {
-            return ReturnVO.error(MessageEnum.VARIABLE_MISS_ERROR);
+            return ResponseVO.error(MessageEnum.VARIABLE_MISS_ERROR);
         }
         return proInfoService.updateProInfo(proInfo) ?
-                ReturnVO.success(MessageEnum.ACTION_SUCCESS) : ReturnVO.success(MessageEnum.UPDATE_ERROR);
+                ResponseVO.success(MessageEnum.ACTION_SUCCESS) : ResponseVO.success(MessageEnum.UPDATE_ERROR);
     }
 }

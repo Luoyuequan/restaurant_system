@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.system.backgroundmanagement.common.PageVO;
-import com.system.backgroundmanagement.common.VO;
+import com.system.backgroundmanagement.common.RequestVO;
 import com.system.backgroundmanagement.dao.MessageDao;
 import com.system.backgroundmanagement.entity.Message;
 import com.system.backgroundmanagement.service.IMessageService;
@@ -31,12 +31,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class MessageServiceImpl extends ServiceImpl<MessageDao, Message> implements IMessageService {
 
     @Override
-    public IPage<Message> listMessage(@NotNull PageVO pageVO, @NotNull VO vo) {
+    public IPage<Message> listMessage(@NotNull PageVO pageVO, @NotNull RequestVO requestVo) {
         QueryWrapper<Message> messageQuery = new QueryWrapper<>();
         //右模糊查询
-        messageQuery.likeRight("name", vo.getName());
+        messageQuery.likeRight("name", requestVo.getName());
 //        //升序
-//        String[] orderColumnName = vo.getSortColumnName().split(",");
+//        String[] orderColumnName = requestVo.getSortColumnName().split(",");
 //        messageQuery.orderByAsc(orderColumnName);
         //设置当前页码和每页数量
         IPage<Message> messagePage = new Page<>(pageVO.getPage(), pageVO.getSize());

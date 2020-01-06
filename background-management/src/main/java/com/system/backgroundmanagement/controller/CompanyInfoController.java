@@ -2,8 +2,9 @@ package com.system.backgroundmanagement.controller;
 
 
 import com.system.backgroundmanagement.common.MessageEnum;
-import com.system.backgroundmanagement.common.ReturnVO;
-import com.system.backgroundmanagement.common.VO;
+import com.system.backgroundmanagement.common.ParamCheckUtils;
+import com.system.backgroundmanagement.common.RequestVO;
+import com.system.backgroundmanagement.common.ResponseVO;
 import com.system.backgroundmanagement.entity.CompanyInfo;
 import com.system.backgroundmanagement.service.ICompanyInfoService;
 import io.swagger.annotations.ApiImplicitParam;
@@ -42,11 +43,11 @@ public class CompanyInfoController {
     @PostMapping("add")
     @ApiOperation("公司信息添加请求接口")
     @ApiImplicitParam(name = "companyInfo", value = "公司信息", dataTypeClass = CompanyInfo.class, required = true)
-    public ReturnVO save(@NotNull @RequestBody CompanyInfo companyInfo) {
-        //校验新增的留言消息的非空参数是否符合
-        boolean checked = companyInfo.getContent() == null || companyInfo.getTel() == null;
-        if (checked) {
-            return ReturnVO.error(MessageEnum.VARIABLE_MISS_ERROR);
+    public ResponseVO save(@NotNull @RequestBody CompanyInfo companyInfo) {
+        //校验新增的公司信息的非空参数是否符合
+        ResponseVO responseVO = ParamCheckUtils.checkValues(companyInfo.getContent(), companyInfo.getTel());
+        if (responseVO != null) {
+            return responseVO;
         }
         AtomicBoolean saveResult = new AtomicBoolean(false);
         try {
@@ -54,23 +55,24 @@ public class CompanyInfoController {
         } catch (Exception e) {
             log.warn("公司信息添加异常,{}", companyInfo, e.getCause());
         }
-        return saveResult.get() ? ReturnVO.success(MessageEnum.ADD_SUCCESS) : ReturnVO.success(MessageEnum.ADD_ERROR);
+        return saveResult.get() ? ResponseVO.success(MessageEnum.ADD_SUCCESS) : ResponseVO.success(MessageEnum.ADD_ERROR);
     }
 
     /**
-     * 根据公司名字或id
+     * 根据公司名字，id
      * 获取指定公司信息
      *
-     * @return vo
+     * @return requestVo
      */
     @GetMapping("get")
     @ApiOperation("获取指定公司信息")
-    public ReturnVO getCompanyInfo(@NotNull VO vo) {
-        boolean checked = vo.getId() == null && vo.getName() == null;
-        if (checked) {
-            return ReturnVO.error(MessageEnum.VARIABLE_MISS_ERROR);
+    public ResponseVO getCompanyInfo(@NotNull RequestVO requestVo) {
+        //检查id，name是否非空
+        ResponseVO responseVO = ParamCheckUtils.checkValues(requestVo.getId(), requestVo.getName());
+        if (responseVO != null) {
+            return responseVO;
         }
-        return companyInfoService.getCompanyInfo(vo);
+        return companyInfoService.getCompanyInfo(requestVo);
     }
 
     /**
@@ -82,14 +84,14 @@ public class CompanyInfoController {
     @PutMapping("update")
     @ApiOperation("修改公司信息")
     @ApiImplicitParam(name = "companyInfo", value = "公司新的信息")
-    public ReturnVO updateCompanyInfo(@NotNull @RequestBody CompanyInfo companyInfo) {
-        boolean checked = companyInfo.getId() == null;
-        //接收的参数是否缺少
-        if (checked) {
-            return ReturnVO.error(MessageEnum.VARIABLE_MISS_ERROR);
+    public ResponseVO updateCompanyInfo(@NotNull @RequestBody CompanyInfo companyInfo) {
+        //检查公司信息id是否非空
+        ResponseVO responseVO = ParamCheckUtils.checkValues(companyInfo.getId());
+        if (responseVO != null) {
+            return responseVO;
         }
         return companyInfoService.updateCompanyInfo(companyInfo) ?
-                ReturnVO.success(MessageEnum.ACTION_SUCCESS) : ReturnVO.success(MessageEnum.UPDATE_ERROR);
+                ResponseVO.success(MessageEnum.ACTION_SUCCESS) : ResponseVO.success(MessageEnum.UPDATE_ERROR);
     }
 
 }

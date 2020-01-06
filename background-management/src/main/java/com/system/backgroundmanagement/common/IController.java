@@ -14,23 +14,49 @@ public interface IController<T> {
     /**
      * 获取单一对象
      *
-     * @param vo      从前端接受的参数集
-     * @param request request请求
+     * @param requestVo 从前端接受的参数集
+     * @param request   request请求
      * @return 响应前端的数据对象
      */
-    default ReturnVO get(VO vo, HttpServletRequest request) {
+    default ResponseVO getOne(RequestVO requestVo, HttpServletRequest request) {
+        return null;
+    }
+
+
+    /**
+     * 对象列表集查询
+     *
+     * @param pageVO    分页参数
+     * @param requestVo 从前端接受的参数集
+     * @param request   request请求
+     * @return 响应前端的数据对象
+     */
+    default ResponseVO list(PageVO pageVO, RequestVO requestVo, HttpServletRequest request) {
         return null;
     }
 
     /**
      * 对象列表集查询
+     * 无分页
      *
-     * @param vo      从前端接受的参数集
-     * @param request request请求
-     * @return 响应前端的数据对象
+     * @param requestVO 请求参数集
+     * @param request   request请求
+     * @return 响应数据
      */
-    default ReturnVO list(VO vo, HttpServletRequest request) {
-        return null;
+    default ResponseVO list(RequestVO requestVO, HttpServletRequest request) {
+        return list(null, requestVO, request);
+    }
+
+    /**
+     * 对象列表集查询
+     * 无分页
+     * 无request请求对象
+     *
+     * @param requestVO 请求参数集
+     * @return 响应数据
+     */
+    default ResponseVO list(RequestVO requestVO) {
+        return list(null, requestVO, null);
     }
 
     /**
@@ -40,7 +66,7 @@ public interface IController<T> {
      * @param request request请求
      * @return 响应前端的数据对象
      */
-    default ReturnVO modify(T data, HttpServletRequest request) {
+    default ResponseVO modify(T data, HttpServletRequest request) {
         return null;
     }
 
@@ -51,18 +77,18 @@ public interface IController<T> {
      * @param request request请求
      * @return 响应前端的数据对象
      */
-    default ReturnVO save(T data, HttpServletRequest request) {
+    default ResponseVO save(T data, HttpServletRequest request) {
         return null;
     }
 
     /**
      * 删除对象请求
      *
-     * @param vo      从前端接受的参数集
-     * @param request request请求
+     * @param requestVo 从前端接受的参数集
+     * @param request   request请求
      * @return 响应前端的数据对象
      */
-    default ReturnVO delete(VO vo, HttpServletRequest request) {
+    default ResponseVO delete(RequestVO requestVo, HttpServletRequest request) {
         return null;
     }
 }

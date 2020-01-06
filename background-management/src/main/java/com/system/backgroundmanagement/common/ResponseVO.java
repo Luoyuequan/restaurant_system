@@ -4,7 +4,7 @@ import lombok.*;
 import lombok.experimental.Accessors;
 
 /**
- * VO（View Object）：显示层对象，通常是 Web 向模板渲染引擎层传输的对象。
+ * RequestVO（View Object）：显示层对象，通常是 Web 向模板渲染引擎层传输的对象。
  *
  * @author luoyuequan
  * @time 2019/12/17 14:25
@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
-public class ReturnVO {
+public class ResponseVO {
     /**
      * 状态码
      */
@@ -34,13 +34,13 @@ public class ReturnVO {
      * @param code 响应码
      * @param msg  响应消息
      */
-    private ReturnVO(Integer code, String msg) {
+    private ResponseVO(Integer code, String msg) {
         this.code = code;
         this.msg = msg;
     }
 
-    private static ReturnVO getInstance(Integer code, String msg, Object data) {
-        return new ReturnVO(code, msg, data);
+    private static ResponseVO getInstance(Integer code, String msg, Object data) {
+        return new ResponseVO(code, msg, data);
     }
 
     /**
@@ -50,7 +50,7 @@ public class ReturnVO {
      * @param data        反馈数据
      * @return vo
      */
-    public static ReturnVO success(MessageEnum messageEnum, Object data) {
+    public static ResponseVO success(MessageEnum messageEnum, Object data) {
         return getInstance(messageEnum.getCode(), messageEnum.getMsg(), data);
     }
 
@@ -60,7 +60,7 @@ public class ReturnVO {
      * @param messageEnum 消息
      * @return vo
      */
-    public static ReturnVO success(MessageEnum messageEnum) {
+    public static ResponseVO success(MessageEnum messageEnum) {
         return success(messageEnum, null);
     }
 
@@ -70,7 +70,7 @@ public class ReturnVO {
      * @param messageEnum 消息
      * @return vo
      */
-    public static ReturnVO error(MessageEnum messageEnum) {
+    public static ResponseVO error(MessageEnum messageEnum) {
         return error(messageEnum, null);
     }
 
@@ -81,7 +81,7 @@ public class ReturnVO {
      * @param data        响应数据
      * @return vo
      */
-    public static ReturnVO error(MessageEnum messageEnum, Object data) {
+    public static ResponseVO error(MessageEnum messageEnum, Object data) {
         return getInstance(messageEnum.getCode(), messageEnum.getMsg(), data);
     }
 }

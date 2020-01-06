@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.system.backgroundmanagement.common.MessageEnum;
-import com.system.backgroundmanagement.common.ReturnVO;
-import com.system.backgroundmanagement.common.VO;
+import com.system.backgroundmanagement.common.RequestVO;
+import com.system.backgroundmanagement.common.ResponseVO;
 import com.system.backgroundmanagement.dao.CompanyInfoDao;
 import com.system.backgroundmanagement.entity.CompanyInfo;
 import com.system.backgroundmanagement.service.ICompanyInfoService;
@@ -27,17 +27,17 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class CompanyInfoServiceImpl extends ServiceImpl<CompanyInfoDao, CompanyInfo> implements ICompanyInfoService {
 
     @Override
-    public ReturnVO getCompanyInfo(VO vo) {
+    public ResponseVO getCompanyInfo(RequestVO requestVo) {
         try {
             QueryWrapper<CompanyInfo> infoQuery = new QueryWrapper<>();
-            infoQuery.likeRight("name", vo.getName()).or().ge("id", vo.getId());
+            infoQuery.likeRight("name", requestVo.getName()).or().ge("id", requestVo.getId());
             CompanyInfo companyInfo = getOne(infoQuery);
             if (companyInfo == null) {
-                return ReturnVO.success(MessageEnum.DATA_NO);
+                return ResponseVO.success(MessageEnum.DATA_NO);
             }
-            return ReturnVO.success(MessageEnum.FIND_SUCCESS, companyInfo);
+            return ResponseVO.success(MessageEnum.FIND_SUCCESS, companyInfo);
         } catch (Exception e) {
-            return ReturnVO.error(MessageEnum.FIND_ERROR);
+            return ResponseVO.error(MessageEnum.FIND_ERROR);
         }
     }
 

@@ -32,28 +32,28 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ProductionInfoServiceImpl extends ServiceImpl<ProductionInfoDao, ProductionInfo>
         implements IProductionInfoService {
     @Override
-    public ReturnVO listProInfo(PageVO pageVO, VO vo) {
+    public ResponseVO listProInfo(PageVO pageVO, RequestVO requestVo) {
         try {
             QueryWrapper<ProductionInfo> infoQuery = new QueryWrapper<>();
-            Map<String, Object> voMap = MapUtils.convertMap(vo);
+            Map<String, Object> voMap = MapUtils.convertMap(requestVo);
             //排除size和page参数,排序列名
             infoQuery.allEq((k, v) -> !"size".equals(k) && !"page".equals(k) && !k.contains("sort"),
                     voMap, false);
             //升序
-//            String[] orderColumnName = vo.getSortColumnName().split(",");
+//            String[] orderColumnName = requestVo.getSortColumnName().split(",");
 //            infoQuery.orderByAsc(orderColumnName);
             IPage<ProductionInfo> infoPage = new Page<>();
             //设置当前页码和每页数量
 //            List<OrderItem> orderItems = new ArrayList<>();
 //            OrderItem orderItem = new OrderItem();
 //            orderItems.add
-            infoPage.setCurrent(vo.getPage()).setSize(vo.getSize());
+            infoPage.setCurrent(requestVo.getPage()).setSize(requestVo.getSize());
             //条件查询+分页
             IPage<ProductionInfo> productionInfoList = page(infoPage, infoQuery);
-            return ReturnVO.success(MessageEnum.FIND_SUCCESS, productionInfoList);
+            return ResponseVO.success(MessageEnum.FIND_SUCCESS, productionInfoList);
         } catch (Exception e) {
-            log.warn("查询失败,vo:{}", vo, e.getCause());
-            return ReturnVO.error(MessageEnum.FIND_ERROR);
+            log.warn("查询失败,requestVo:{}", requestVo, e.getCause());
+            return ResponseVO.error(MessageEnum.FIND_ERROR);
         }
     }
 

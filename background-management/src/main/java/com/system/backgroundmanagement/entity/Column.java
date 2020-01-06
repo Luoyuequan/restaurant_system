@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.data.annotation.Transient;
 
 import java.io.Serializable;
 
@@ -52,6 +53,12 @@ public class Column implements Serializable {
      */
     @TableField("column_type_id")
     private Integer columnTypeId;
+
+    /**
+     * id对应的栏目类型
+     */
+    @Transient
+    private ColumnType columnType;
 
     /**
      * 排序值
