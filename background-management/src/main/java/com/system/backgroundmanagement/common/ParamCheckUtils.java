@@ -1,6 +1,8 @@
 package com.system.backgroundmanagement.common;
 
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
@@ -16,7 +18,13 @@ import java.util.List;
  */
 @Slf4j
 public class ParamCheckUtils {
+
+    @Nullable
+    @Contract("null, _ -> !null")
     public static ReturnVO checkBatchIds(String ids, List<Long> idList) {
+        if (ids == null) {
+            return ReturnVO.error(MessageEnum.VARIABLE_MISS_ERROR);
+        }
         String[] strings = ids.split(",");
         //接收的参数是否缺少
         if (ArraysUtils.isEmpty(strings)) {
@@ -38,4 +46,5 @@ public class ParamCheckUtils {
         }
         return null;
     }
+
 }

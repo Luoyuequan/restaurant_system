@@ -1,10 +1,8 @@
 package com.system.backgroundmanagement.controller;
 
 
-import com.system.backgroundmanagement.common.MessageEnum;
-import com.system.backgroundmanagement.common.ParamCheckUtils;
-import com.system.backgroundmanagement.common.ReturnVO;
-import com.system.backgroundmanagement.common.VO;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.system.backgroundmanagement.common.*;
 import com.system.backgroundmanagement.entity.Message;
 import com.system.backgroundmanagement.service.IMessageService;
 import io.swagger.annotations.Api;
@@ -14,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -28,7 +27,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 @RestController
 @Api(tags = "留言消息管理接口")
-@RequestMapping("/message")
+@RequestMapping("message")
 @Slf4j
 public class MessageController {
     private final IMessageService messageService;
@@ -46,7 +45,7 @@ public class MessageController {
     @PostMapping("add")
     @ApiOperation("游客留言添加请求接口")
     @ApiImplicitParam(name = "message", value = "留言消息体", dataTypeClass = Message.class, required = true)
-    public ReturnVO save(@NotNull @RequestBody Message message) {
+    public ReturnVO save(@NotNull @RequestBody Message message, HttpServletRequest request) {
         //校验新增的留言消息的非空参数是否符合
         boolean checked = message.getName() == null || message.getContent() == null;
         if (checked) {
@@ -54,6 +53,8 @@ public class MessageController {
         }
         AtomicBoolean saveResult = new AtomicBoolean(false);
         try {
+            String ip = request.getRemoteAddr();
+            message.setIp(ip);
             saveResult.set(messageService.save(message));
         } catch (Exception e) {
             log.warn("留言消息添加异常,{}", message, e.getCause());
@@ -65,43 +66,56 @@ public class MessageController {
      * 根据分页和关键字查询(非必须)
      * 获取留言列表接口
      *
-     * @param vo 请求参数(包含分页,关键字查询)
-     * @return vo
+     * @param pageVO  分页参数
+     * @param vo      请求参数条件
+     * @param request request请求
+     * @return
      */
     @GetMapping("list")
     @ApiOperation("根据分页和关键字查询获取留言列表接口")
-    public ReturnVO list(VO vo) {
-        return messageService.listMessage(vo);
+    public ReturnVO list(PageVO pageVO, VO vo, HttpServletRequest request) {
+        try {
+            IPage<Message> listMessage = messageService.listMessage(pageVO, vo);
+            return ReturnVO.success(MessageEnum.FIND_SUCCESS, listMessage);
+        } catch (RuntimeException e) {
+            log.warn("uri:{},msg:{}", request.getRequestURI(), MessageEnum.FIND_ERROR.getMsg(), e.getCause());
+            return ReturnVO.error(MessageEnum.FIND_ERROR);
+        }
     }
 
     /**
      * 获取指定id留言消息
      *
-     * @param id id
+     * @param vo 请求参数(id)
      * @return vo
      */
-    @GetMapping("get/{id}")
+    @GetMapping("get")
     @ApiOperation("获取指定id留言消息")
-    @ApiImplicitParam(name = "id", value = "留言消息id", dataTypeClass = Long.class)
-    public ReturnVO getById(@PathVariable Long id) {
-        Message message = messageService.getById(id);
-        return ReturnVO.success(MessageEnum.FIND_SUCCESS, message);
+    public ReturnVO getById(@NotNull VO vo, HttpServletRequest request) {
+        Long id = vo.getId();
+        if (id == null) {
+            return ReturnVO.error(MessageEnum.VARIABLE_MISS_ERROR);
+        }
+        try {
+            Message message = messageService.getById(id);
+            return ReturnVO.success(MessageEnum.FIND_SUCCESS, message);
+        } catch (Exception e) {
+            log.warn("uri:{},msg:{}", request.getRequestURI(), MessageEnum.FIND_ERROR.getMsg(), e.getCause());
+            return ReturnVO.error(MessageEnum.FIND_ERROR);
+        }
     }
 
     /**
      * 删除指定id集合的留言记录接口
      *
-     * @param ids 请求参数(多个id由英文逗号拼接成字符串)
+     * @param vo 请求参数(多个id由英文逗号拼接成字符串)
      * @return vo
      */
-    @DeleteMapping("del/{ids}")
+    @DeleteMapping("del")
     @ApiOperation("删除指定id集合的留言记录接口")
-    @ApiImplicitParam(name = "ids", value = "请求参数(多个id由英文逗号拼接成字符串)",
-            dataTypeClass = String.class, required = true
-    )
-    public ReturnVO deleteMessage(@NotNull @PathVariable String ids) {
+    public ReturnVO deleteMessage(@NotNull VO vo) {
         List<Long> idList = new ArrayList<>();
-        ReturnVO checkResult = ParamCheckUtils.checkBatchIds(ids, idList);
+        ReturnVO checkResult = ParamCheckUtils.checkBatchIds(vo.getIds(), idList);
         if (checkResult != null) {
             return checkResult;
         }

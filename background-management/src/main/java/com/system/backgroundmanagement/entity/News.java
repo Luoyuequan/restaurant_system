@@ -41,13 +41,24 @@ public class News implements Serializable {
     @TableField("is_checked")
     private Boolean checked;
 
-    @TableField("rank")
-    private Integer rank;
+    /**
+     * 排序值
+     */
+    @TableField("rank_value")
+    private Integer rankValue;
 
+    /**
+     * 点击数
+     */
+    @TableField(value = "click_number")
+    private Long clickNumber;
+
+    /**
+     * 缩略图
+     */
     @TableField("img")
     private String img;
 
-    // TODO: 2020/01/05 修改news表的字段，将is_recoment改为is_recommend
     /**
      * 是否推荐，0未，1已
      */
@@ -61,10 +72,10 @@ public class News implements Serializable {
     private Boolean top;
 
     /**
-     * 简介
+     * 概述
      */
-    @TableField("resume")
-    private String resume;
+    @TableField("simple_info")
+    private String simpleInfo;
 
     /**
      * 详细内容

@@ -1,8 +1,13 @@
 package com.system.backgroundmanagement.controller;
 
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.system.backgroundmanagement.common.IController;
+import com.system.backgroundmanagement.common.ReturnVO;
+import com.system.backgroundmanagement.common.VO;
+import com.system.backgroundmanagement.entity.Column;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -14,6 +19,35 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/column")
-public class ColumnController {
+public class ColumnController implements IController<Column> {
 
+    @GetMapping("get")
+    @Override
+    public ReturnVO get(VO vo, HttpServletRequest request) {
+        return null;
+    }
+
+    @GetMapping("list")
+    @Override
+    public ReturnVO list(VO vo, HttpServletRequest request) {
+        return null;
+    }
+
+    @PutMapping("update")
+    @Override
+    public ReturnVO modify(Column data, HttpServletRequest request) {
+        return null;
+    }
+
+    @PostMapping("add")
+    @Override
+    public ReturnVO save(Column data, HttpServletRequest request) {
+        return null;
+    }
+
+    @DeleteMapping("del")
+    @Override
+    public ReturnVO delete(VO vo, HttpServletRequest request) {
+        return null;
+    }
 }

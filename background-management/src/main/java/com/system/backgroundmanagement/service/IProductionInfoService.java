@@ -1,6 +1,7 @@
 package com.system.backgroundmanagement.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.system.backgroundmanagement.common.PageVO;
 import com.system.backgroundmanagement.common.ReturnVO;
 import com.system.backgroundmanagement.common.VO;
 import com.system.backgroundmanagement.entity.ProductionInfo;
@@ -19,12 +20,18 @@ public interface IProductionInfoService extends IService<ProductionInfo> {
 
 
     /**
-     * @param vo
+     * 根据title筛选分页(非必须)
+     * 产品信息列表
+     *
+     * @param pageVO 分页参数
+     * @param vo     条件参数
      * @return
      */
-    ReturnVO listProInfo(VO vo);
+    ReturnVO listProInfo(PageVO pageVO, VO vo);
 
     /**
+     * 修改产品信息
+     *
      * @param proInfo
      * @return
      */
@@ -37,4 +44,13 @@ public interface IProductionInfoService extends IService<ProductionInfo> {
      * @return
      */
     boolean deleteByIds(List<Long> idList);
+
+    /**
+     * 访问产品信息
+     * 增加点击数
+     *
+     * @param id
+     * @return
+     */
+    ProductionInfo getProInfo(Long id);
 }

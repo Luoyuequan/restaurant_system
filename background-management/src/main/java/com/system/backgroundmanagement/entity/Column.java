@@ -18,7 +18,7 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("column")
+@TableName("`column`")
 public class Column implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -38,7 +38,7 @@ public class Column implements Serializable {
     /**
      * 栏目名称
      */
-    @TableField("name")
+    @TableField("`name`")
     private String name;
 
     /**
@@ -54,10 +54,10 @@ public class Column implements Serializable {
     private Integer columnTypeId;
 
     /**
-     * 排序号
+     * 排序值
      */
-    @TableField("rank")
-    private Integer rank;
+    @TableField("rank_value")
+    private Integer rankValue;
 
     /**
      * 图标样式

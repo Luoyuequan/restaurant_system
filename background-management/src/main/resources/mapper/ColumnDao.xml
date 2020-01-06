@@ -12,7 +12,7 @@
         <result column="name" property="name"/>
         <result column="en_name" property="enName"/>
         <result column="column_type_id" property="columnTypeId"/>
-        <result column="rank" property="rank"/>
+        <result column="rank_value" property="rankValue"/>
         <result column="icon" property="icon"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
@@ -21,7 +21,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, pid, `name`, en_name, column_type_id, `rank`, icon, create_time, update_time, is_deleted
+        id, pid, `name`, en_name, column_type_id, `rank_value`, icon, create_time, update_time, is_deleted
     </sql>
 
 </mapper>

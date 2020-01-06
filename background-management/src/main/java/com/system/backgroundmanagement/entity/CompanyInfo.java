@@ -29,7 +29,7 @@ public class CompanyInfo implements Serializable {
     /**
      * 公司名字
      */
-    @TableField("name")
+    @TableField("`name`")
     private String name;
 
     /**

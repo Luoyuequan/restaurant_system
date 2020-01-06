@@ -32,6 +32,9 @@ public class CompanyInfoServiceImpl extends ServiceImpl<CompanyInfoDao, CompanyI
             QueryWrapper<CompanyInfo> infoQuery = new QueryWrapper<>();
             infoQuery.likeRight("name", vo.getName()).or().ge("id", vo.getId());
             CompanyInfo companyInfo = getOne(infoQuery);
+            if (companyInfo == null) {
+                return ReturnVO.success(MessageEnum.DATA_NO);
+            }
             return ReturnVO.success(MessageEnum.FIND_SUCCESS, companyInfo);
         } catch (Exception e) {
             return ReturnVO.error(MessageEnum.FIND_ERROR);

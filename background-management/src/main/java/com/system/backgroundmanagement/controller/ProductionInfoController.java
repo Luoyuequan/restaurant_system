@@ -1,10 +1,7 @@
 package com.system.backgroundmanagement.controller;
 
 
-import com.system.backgroundmanagement.common.MessageEnum;
-import com.system.backgroundmanagement.common.ParamCheckUtils;
-import com.system.backgroundmanagement.common.ReturnVO;
-import com.system.backgroundmanagement.common.VO;
+import com.system.backgroundmanagement.common.*;
 import com.system.backgroundmanagement.entity.ProductionInfo;
 import com.system.backgroundmanagement.service.IProductionInfoService;
 import io.swagger.annotations.ApiImplicitParam;
@@ -39,13 +36,14 @@ public class ProductionInfoController {
     /**
      * 产品信息添加接口
      *
-     * @param proInfo
-     * @return
+     * @param proInfo 新的产品信息
+     * @return 响应vo
      */
     @PostMapping("add")
     public ReturnVO saveProInfo(@NotNull @RequestBody ProductionInfo proInfo) {
         //校验新增的留言消息的非空参数是否符合
-        boolean checked = proInfo.getTitle() == null || proInfo.getRank() == null;
+        boolean checked = proInfo.getTitle() == null || proInfo.getColumnId() == null ||
+                proInfo.getRankValue() == null || proInfo.getSimpleInfo() == null;
         if (checked) {
             return ReturnVO.error(MessageEnum.VARIABLE_MISS_ERROR);
         }
@@ -58,10 +56,17 @@ public class ProductionInfoController {
         return saveResult.get() ? ReturnVO.success(MessageEnum.ADD_SUCCESS) : ReturnVO.success(MessageEnum.ADD_ERROR);
     }
 
-    @DeleteMapping("del/{ids}")
-    public ReturnVO delProInfo(@PathVariable String ids) {
+
+    /**
+     * 删除指定id集合的产品信息接口
+     *
+     * @param vo 请求参数(多个id由英文逗号拼接成字符串)
+     * @return vo
+     */
+    @DeleteMapping("del")
+    public ReturnVO delProInfo(@NotNull VO vo) {
         List<Long> idList = new ArrayList<>();
-        ReturnVO checkResult = ParamCheckUtils.checkBatchIds(ids, idList);
+        ReturnVO checkResult = ParamCheckUtils.checkBatchIds(vo.getIds(), idList);
         if (checkResult != null) {
             return checkResult;
         }
@@ -71,22 +76,42 @@ public class ProductionInfoController {
     }
 
     /**
-     * 根据title，recommend，top筛选分页(非必须)
+     * 根据 title，recommend，top 筛选分页(非必须)
      * 产品信息列表接口
      *
-     * @param vo
-     * @return
+     * @param pageVO 分页参数
+     * @param vo     条件查询参数
+     * @return 响应数据
      */
     @GetMapping("list")
-    public ReturnVO listProInfo(VO vo) {
-        return proInfoService.listProInfo(vo);
+    public ReturnVO listProInfo(PageVO pageVO, VO vo) {
+        return proInfoService.listProInfo(pageVO, vo);
+    }
+
+    /**
+     * 获取指定id留言消息
+     *
+     * @param vo 请求参数(id)
+     * @return vo
+     */
+    @GetMapping("get")
+    public ReturnVO getProInfo(@NotNull VO vo) {
+        Long id = vo.getId();
+        if (id == null) {
+            return ReturnVO.error(MessageEnum.VARIABLE_MISS_ERROR);
+        }
+        ProductionInfo productionInfo = proInfoService.getProInfo(id);
+        if (productionInfo == null) {
+            return ReturnVO.success(MessageEnum.DATA_NO);
+        }
+        return ReturnVO.success(MessageEnum.FIND_SUCCESS, productionInfo);
     }
 
     /**
      * 修改产品信息接口
      *
-     * @param proInfo
-     * @return
+     * @param proInfo 产品新的信息
+     * @return vo
      */
     @PutMapping("update")
     @ApiOperation("修改产品信息")

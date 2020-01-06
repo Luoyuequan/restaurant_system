@@ -4,8 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.system.backgroundmanagement.common.MessageEnum;
-import com.system.backgroundmanagement.common.ReturnVO;
+import com.system.backgroundmanagement.common.PageVO;
 import com.system.backgroundmanagement.common.VO;
 import com.system.backgroundmanagement.dao.MessageDao;
 import com.system.backgroundmanagement.entity.Message;
@@ -32,17 +31,17 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class MessageServiceImpl extends ServiceImpl<MessageDao, Message> implements IMessageService {
 
     @Override
-    public ReturnVO listMessage(VO vo) {
-        try {
-            QueryWrapper<Message> messageQuery = new QueryWrapper<>();
-            messageQuery.likeRight("name", vo.getName());
-            IPage<Message> messagePage = new Page<>();
-            messagePage.setCurrent(vo.getPage()).setSize(vo.getSize());
-            IPage<Message> messageList = page(messagePage, messageQuery);
-            return ReturnVO.success(MessageEnum.FIND_SUCCESS, messageList);
-        } catch (Exception e) {
-            return ReturnVO.error(MessageEnum.FIND_ERROR);
-        }
+    public IPage<Message> listMessage(@NotNull PageVO pageVO, @NotNull VO vo) {
+        QueryWrapper<Message> messageQuery = new QueryWrapper<>();
+        //右模糊查询
+        messageQuery.likeRight("name", vo.getName());
+//        //升序
+//        String[] orderColumnName = vo.getSortColumnName().split(",");
+//        messageQuery.orderByAsc(orderColumnName);
+        //设置当前页码和每页数量
+        IPage<Message> messagePage = new Page<>(pageVO.getPage(), pageVO.getSize());
+        //条件查询+分页
+        return page(messagePage, messageQuery);
     }
 
     @Override

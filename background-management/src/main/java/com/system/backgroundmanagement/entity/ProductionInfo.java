@@ -41,8 +41,17 @@ public class ProductionInfo implements Serializable {
     @TableField("is_checked")
     private Boolean checked;
 
-    @TableField("rank")
-    private Integer rank;
+    /**
+     * 排序值
+     */
+    @TableField("rank_value")
+    private Integer rankValue;
+
+    /**
+     * 点击数
+     */
+    @TableField(value = "click_number")
+    private Long clickNumber;
 
     /**
      * 缩略图
@@ -50,7 +59,6 @@ public class ProductionInfo implements Serializable {
     @TableField("img")
     private String img;
 
-    // TODO: 2020/01/05 产品信息表的字段is_recomend改成is_recommend
     /**
      * 是否推荐，0未，1已
      */
@@ -64,10 +72,10 @@ public class ProductionInfo implements Serializable {
     private Boolean top;
 
     /**
-     * 简介
+     * 概述
      */
-    @TableField("resume")
-    private String resume;
+    @TableField("simple_info")
+    private String simpleInfo;
 
     /**
      * 详细内容

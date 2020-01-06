@@ -11,11 +11,12 @@
         <result column="column_id" property="columnId"/>
         <result column="title" property="title"/>
         <result column="is_checked" property="checked"/>
-        <result column="rank" property="rank"/>
+        <result column="rank_value" property="rankValue"/>
+        <result column="click_number" property="clickNumber"/>
         <result column="img" property="img"/>
         <result column="is_recommend" property="recommend"/>
         <result column="is_top" property="top"/>
-        <result column="resume" property="resume"/>
+        <result column="simple_info" property="simpleInfo"/>
         <result column="detail_info" property="detailInfo"/>
         <result column="is_deleted" property="deleted"/>
         <result column="create_time" property="createTime"/>
@@ -24,7 +25,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, column_id, title, is_checked, `rank`, img, is_recommend, is_top, `resume`, detail_info, is_delete, create_time, update_time
+        id, column_id, title, is_checked, rank_value,click_number, img, is_recommend, is_top, simple_info, detail_info, is_deleted, create_time, update_time
     </sql>
 
 </mapper>

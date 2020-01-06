@@ -32,7 +32,7 @@ public class ColumnType implements Serializable {
     /**
      * 栏目类型值
      */
-    @TableField("value")
+    @TableField("`value`")
     private String value;
 
 

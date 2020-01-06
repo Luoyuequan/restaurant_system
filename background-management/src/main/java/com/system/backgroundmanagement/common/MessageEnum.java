@@ -9,6 +9,14 @@ package com.system.backgroundmanagement.common;
  */
 public enum MessageEnum {
     /**
+     * 无此数据
+     */
+    DATA_NO(0, "无此数据"),
+    /**
+     * 数据无效
+     */
+    DATA_INVALID(0, "数据无效"),
+    /**
      * 操作成功 提示语
      */
     ACTION_SUCCESS(1, "操作成功"),
@@ -36,6 +44,18 @@ public enum MessageEnum {
      * 查询成功 提示语
      */
     FIND_SUCCESS(1, "查询成功"),
+    /**
+     * 注销成功
+     */
+    LOGOUT_SUCCESS(1, "注销成功"),
+    /**
+     * 注销失败
+     */
+    LOGOUT_ERROR(0, "注销失败"),
+    /**
+     * 登录成功
+     */
+    LOGIN_SUCCESS(1, "登录成功"),
     /**
      * 登录错误
      */
