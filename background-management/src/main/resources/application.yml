@@ -13,9 +13,3 @@ server:
   port: 9000
 mybatis-plus:
   config-location: classpath:mybatis-config.xml
-#jwtp:
-#  store-type: 0
-#  path: /**
-#  exclude-path: /admin/login
-#  max-token: 10
-#  url-perm-type: 1

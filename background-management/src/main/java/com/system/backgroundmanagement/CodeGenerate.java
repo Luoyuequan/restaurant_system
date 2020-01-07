@@ -89,7 +89,7 @@ public class CodeGenerate {
         dsc.setDbType(DbType.MYSQL);
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
-        dsc.setPassword("root");
+        dsc.setPassword("rootadmin");
         mpg.setDataSource(dsc);
 
         // 包配置

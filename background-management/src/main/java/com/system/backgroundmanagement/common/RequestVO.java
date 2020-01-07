@@ -23,6 +23,11 @@ public class RequestVO {
     private Long id;
 
     /**
+     * 栏目id
+     */
+    private Long columnId;
+
+    /**
      * 批量操作时,多个id由英文逗号,分割
      */
     private String ids;
@@ -46,6 +51,6 @@ public class RequestVO {
      * 排序列名，优先级规则等同数据库order by 规则
      * 多个列名由英文,分割
      */
-    private String sortColumnName;
+//    private String sortColumnName;
 
 }

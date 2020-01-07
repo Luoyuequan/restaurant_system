@@ -12,5 +12,4 @@ import com.system.backgroundmanagement.entity.Admin;
  * @since 2020-01-04
  */
 public interface AdminDao extends BaseMapper<Admin> {
-
 }

@@ -32,6 +32,13 @@ public class ProductionInfo implements Serializable {
     @TableField("column_id")
     private Long columnId;
 
+    /**
+     * 对应的栏目类型
+     * exist 默认值true	是否为数据库表字段
+     */
+    @TableField(exist = false)
+    private Column column;
+
     @TableField("title")
     private String title;
 

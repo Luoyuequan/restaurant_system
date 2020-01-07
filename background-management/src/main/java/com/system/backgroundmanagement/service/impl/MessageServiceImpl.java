@@ -34,7 +34,9 @@ public class MessageServiceImpl extends ServiceImpl<MessageDao, Message> impleme
     public IPage<Message> listMessage(@NotNull PageVO pageVO, @NotNull RequestVO requestVo) {
         QueryWrapper<Message> messageQuery = new QueryWrapper<>();
         //右模糊查询
-        messageQuery.likeRight("name", requestVo.getName());
+        if (requestVo.getName() != null) {
+            messageQuery.likeRight("name", requestVo.getName());
+        }
 //        //升序
 //        String[] orderColumnName = requestVo.getSortColumnName().split(",");
 //        messageQuery.orderByAsc(orderColumnName);

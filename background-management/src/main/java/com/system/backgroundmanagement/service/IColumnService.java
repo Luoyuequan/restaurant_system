@@ -1,10 +1,7 @@
 package com.system.backgroundmanagement.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.system.backgroundmanagement.common.PageVO;
 import com.system.backgroundmanagement.common.RequestVO;
-import com.system.backgroundmanagement.common.ResponseVO;
 import com.system.backgroundmanagement.entity.Column;
 
 import java.util.List;
@@ -20,13 +17,12 @@ import java.util.List;
 public interface IColumnService extends IService<Column> {
 
     /**
-     * 条件查询+分页
+     * 全部栏目信息以及栏目类型信息
      *
-     * @param pageVO
      * @param requestVo
      * @return
      */
-    IPage<Column> listColumn(PageVO pageVO, RequestVO requestVo);
+    List<Column> listColumn(RequestVO requestVo);
 
     /**
      * 修改栏目信息
@@ -34,7 +30,7 @@ public interface IColumnService extends IService<Column> {
      * @param column
      * @return
      */
-    ResponseVO updateColumn(Column column);
+    boolean updateColumn(Column column);
 
     /**
      * 删除指定栏目
@@ -43,4 +39,13 @@ public interface IColumnService extends IService<Column> {
      * @return
      */
     boolean deleteByIds(List<Long> idList);
+
+    /**
+     * 根据栏目id
+     * 获取栏目信息以及栏目类型信息
+     *
+     * @param id id
+     * @return
+     */
+    Column getColumnInfoById(Long id);
 }

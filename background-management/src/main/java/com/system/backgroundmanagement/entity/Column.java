@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-import org.springframework.data.annotation.Transient;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -36,6 +36,7 @@ public class Column implements Serializable {
     @TableField("pid")
     private Long pid;
 
+
     /**
      * 栏目名称
      */
@@ -57,7 +58,7 @@ public class Column implements Serializable {
     /**
      * id对应的栏目类型
      */
-    @Transient
+    @TableField(exist = false)
     private ColumnType columnType;
 
     /**
@@ -88,5 +89,9 @@ public class Column implements Serializable {
     @TableLogic
     private Boolean deleted;
 
-
+    /**
+     * 子栏目集合
+     */
+    @TableField(exist = false)
+    private List<Column> childColumn;
 }

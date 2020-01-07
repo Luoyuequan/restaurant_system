@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+         updateCheck="false">
+    <!-- path : 指定在硬盘上存储对象的路径-->
+    <!--
+　　     指定二级缓存存放在磁盘上的位置，可以使用磁盘目录，
+        也可以使用Java System Property目录，
+        user.home是用户目录、
+        user.dir是用户当前工作目录、
+        java.io.tmpdir是默认临时文件路径
+　　-->
+    <diskStore path="user.dir/Tmp_EhCache"/>
+    <!-- defaultCache：默认的管理策略-->
+    <!-- eternal : 设定缓存的elements是否永远不过期。如果为true，则缓存的数据始终有效，如果为false那么还要根据timeToIdleSeconds，timeToLiveSeconds判断-->
+    <!-- maxElementsInMemory : 内存中最大缓存对象数 -->
+    <!-- overflowToDisk : 配置此属性，当内存中Element数量达到maxElementsInMemory时，Ehcache将会Element写到磁盘中。 -->
+    <!-- diskPersistent：是否在磁盘上持久化。指重启jvm后，数据是否有效。默认为false -->
+    <!-- timeToIdleSeconds : 对象空闲时间(单位：秒)，指对象在多长时间没有被访问就会失效。只对eternal为false的有效。默认值0，表示一直可以访问-->
+    <!-- timeToLiveSeconds : 对象存活时间(单位：秒)，指对象从创建到失效所需要的时间。只对eternal为false的有效。默认值0，表示一直可以访问 -->
+    <!-- memoryStoreEvictionPolicy：缓存的3 种清空策略
+            FIFO：first in first out (先进先出)
+            LFU：Less Frequently Used (最少使用).意思是一直以来最少被使用的。缓存的元素有一个hit 属性，hit 值最小的将会被清出缓存
+            LRU：Least Recently Used(最近最少使用). (ehcache 默认值).缓存的元素有一个时间戳，当缓存容量满了，而又需要腾出地方来缓存新的元素的时候，那么现有缓存元素中时间戳离当前时间最远的元素将被清出缓存
+    -->
+    <defaultCache
+            maxElementsInMemory="10000"
+            overflowToDisk="false"
+            diskPersistent="false"
+            timeToIdleSeconds="1800"
+            timeToLiveSeconds="259200"
+            memoryStoreEvictionPolicy="LRU"/>
+    <!--想使用查询缓存，这两个类需要添加-->
+    <cache name="org.hibernate.cache.spi.TimestampsCache"
+           maxElementsInMemory="5000"
+           eternal="true"
+           overflowToDisk="true"/>
+    <cache name="org.hibernate.cache.internal.StandardQueryCache"
+           maxElementsInMemory="10000"
+           timeToLiveSeconds="120"
+           overflowToDisk="true"/>
+    <cache name="javaClassName"
+           maxElementsInMemory="2000"
+           timeToIdleSeconds="120"
+           timeToLiveSeconds="120"
+           overflowToDisk="true"/>
+</ehcache>

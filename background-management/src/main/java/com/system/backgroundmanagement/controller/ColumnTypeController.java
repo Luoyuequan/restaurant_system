@@ -79,7 +79,7 @@ public class ColumnTypeController implements IController<ColumnType> {
     @PutMapping("update")
     public ResponseVO modify(@NotNull @RequestBody ColumnType columnType, HttpServletRequest request) {
         //接收的参数是否缺少
-        ResponseVO responseVO = ParamCheckUtils.checkValues(columnType.getId());
+        ResponseVO responseVO = ParamCheckUtils.checkValues(columnType.getId(), columnType.getValue());
         if (responseVO != null) {
             return responseVO;
         }

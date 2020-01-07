@@ -3,7 +3,7 @@
 <mapper namespace="com.system.backgroundmanagement.dao.ColumnDao">
 
     <!-- 开启二级缓存 -->
-    <cache/>
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.system.backgroundmanagement.entity.Column">
@@ -16,12 +16,55 @@
         <result column="icon" property="icon"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
-        <result column="is_deleted" property="deleted"/>
+        <result column="is_deleted" property="deleted" javaType="java.lang.Boolean" jdbcType="TINYINT"/>
     </resultMap>
-
+    <!-- 栏目信息包含栏目类型信息 -->
+    <resultMap id="ColumnAndTypeResult" type="com.system.backgroundmanagement.entity.Column">
+        <id column="id" property="id"/>
+        <result column="pid" property="pid"/>
+        <result column="name" property="name"/>
+        <result column="rank_value" property="rankValue"/>
+        <result column="icon" property="icon"/>
+        <result column="is_deleted" property="deleted"/>
+        <association property="columnType" javaType="ColumnType">
+            <id property="id" column="column_type_id"/>
+            <result property="value" column="column_type_value"/>
+        </association>
+    </resultMap>
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, pid, `name`, en_name, column_type_id, `rank_value`, icon, create_time, update_time, is_deleted
+        id, pid, `name`, en_name, column_type_id, rank_value, icon, create_time, update_time, is_deleted
     </sql>
+    <select id="selectColumnAndTypeByPid" resultMap="ColumnAndTypeResult" flushCache="true">
+        select c.id,
+        pid,
+        name,
+        c.column_type_id,
+        ct.value as column_type_value,
+        rank_value,
+        icon,is_deleted
+        from `column` c
+        left join column_type ct on c.column_type_id = ct.id
+        <where>
+            <choose>
+                <when test="deleted != null">
+                    is_deleted = #{deleted,javaType="java.lang.Boolean",jdbcType="TINYINT"}
+                </when>
+                <otherwise>
+                    is_deleted = 0
+                </otherwise>
+            </choose>
+            and
+            <choose>
+                <when test="pid != null">
+                    pid = #{pid}
+                </when>
+                <otherwise>
+                    pid = 0
+                </otherwise>
+            </choose>
+        </where>
+        order by pid,rank_value,id;
+    </select>
 
 </mapper>

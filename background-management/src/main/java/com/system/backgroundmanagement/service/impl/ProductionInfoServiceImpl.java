@@ -36,20 +36,16 @@ public class ProductionInfoServiceImpl extends ServiceImpl<ProductionInfoDao, Pr
         try {
             QueryWrapper<ProductionInfo> infoQuery = new QueryWrapper<>();
             Map<String, Object> voMap = MapUtils.convertMap(requestVo);
-            //排除size和page参数,排序列名
-            infoQuery.allEq((k, v) -> !"size".equals(k) && !"page".equals(k) && !k.contains("sort"),
-                    voMap, false);
-            //升序
-//            String[] orderColumnName = requestVo.getSortColumnName().split(",");
-//            infoQuery.orderByAsc(orderColumnName);
+            //非null的作为查询参数
+            infoQuery.allEq(voMap, false);
             IPage<ProductionInfo> infoPage = new Page<>();
-            //设置当前页码和每页数量
-//            List<OrderItem> orderItems = new ArrayList<>();
-//            OrderItem orderItem = new OrderItem();
-//            orderItems.add
-            infoPage.setCurrent(requestVo.getPage()).setSize(requestVo.getSize());
+            infoPage.setCurrent(pageVO.getPage()).setSize(pageVO.getSize());
             //条件查询+分页
             IPage<ProductionInfo> productionInfoList = page(infoPage, infoQuery);
+            List<ProductionInfo> infoList = productionInfoList.getRecords();
+            for (ProductionInfo p : infoList) {
+
+            }
             return ResponseVO.success(MessageEnum.FIND_SUCCESS, productionInfoList);
         } catch (Exception e) {
             log.warn("查询失败,requestVo:{}", requestVo, e.getCause());

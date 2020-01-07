@@ -59,6 +59,4 @@
     <typeAliases>
         <package name="com.system.backgroundmanagement.entity"/>
     </typeAliases>
-
-    <databaseIdProvider type="DB_VENDOR"/>
 </configuration>

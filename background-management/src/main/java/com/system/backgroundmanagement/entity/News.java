@@ -30,6 +30,13 @@ public class News implements Serializable {
     private Long columnId;
 
     /**
+     * 对应的栏目类型
+     * exist 默认值true	是否为数据库表字段
+     */
+    @TableField(exist = false)
+    private Column column;
+
+    /**
      * 标题
      */
     @TableField("title")

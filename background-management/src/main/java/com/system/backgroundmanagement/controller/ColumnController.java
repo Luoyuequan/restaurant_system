@@ -1,7 +1,6 @@
 package com.system.backgroundmanagement.controller;
 
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.system.backgroundmanagement.common.*;
 import com.system.backgroundmanagement.entity.Column;
 import com.system.backgroundmanagement.service.IColumnService;
@@ -39,7 +38,7 @@ public class ColumnController implements IController<Column> {
             return responseVO;
         }
         try {
-            Column column = columnService.getById(requestVo.getId());
+            Column column = columnService.getColumnInfoById(requestVo.getId());
             return ResponseVO.success(MessageEnum.FIND_SUCCESS, column);
         } catch (Exception e) {
             log.warn("uri:{},msg:{}", request.getRequestURI(), MessageEnum.FIND_ERROR.getMsg(), e.getCause());
@@ -50,17 +49,16 @@ public class ColumnController implements IController<Column> {
     /**
      * 获取栏目列表信息集合
      *
-     * @param pageVO    分页参数
      * @param requestVo 从前端接受的参数集
      * @param request   request请求
      * @return
      */
     @GetMapping("list")
     @Override
-    public ResponseVO list(PageVO pageVO, RequestVO requestVo, HttpServletRequest request) {
+    public ResponseVO list(RequestVO requestVo, HttpServletRequest request) {
         try {
-            // TODO: 2020/01/06 栏目列表信息集合查询，重点，涉及子查询,数据格式
-            IPage<Column> listColumn = columnService.listColumn(pageVO, requestVo);
+            // TODO: 2020/1/7 requestVo columnId作为pid使用
+            List<Column> listColumn = columnService.listColumn(requestVo);
             return ResponseVO.success(MessageEnum.FIND_SUCCESS, listColumn);
         } catch (RuntimeException e) {
             log.warn("uri:{},msg:{}", request.getRequestURI(), MessageEnum.FIND_ERROR.getMsg(), e.getCause());
@@ -75,7 +73,8 @@ public class ColumnController implements IController<Column> {
         if (responseVO != null) {
             return responseVO;
         }
-        return columnService.updateColumn(column);
+        return columnService.updateColumn(column) ?
+                ResponseVO.success(MessageEnum.ACTION_SUCCESS) : ResponseVO.success(MessageEnum.UPDATE_ERROR);
     }
 
     @PostMapping("add")
