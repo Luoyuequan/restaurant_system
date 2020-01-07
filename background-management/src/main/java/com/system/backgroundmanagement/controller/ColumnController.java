@@ -57,7 +57,6 @@ public class ColumnController implements IController<Column> {
     @Override
     public ResponseVO list(RequestVO requestVo, HttpServletRequest request) {
         try {
-            // TODO: 2020/1/7 requestVo columnId作为pid使用
             List<Column> listColumn = columnService.listColumn(requestVo);
             return ResponseVO.success(MessageEnum.FIND_SUCCESS, listColumn);
         } catch (RuntimeException e) {

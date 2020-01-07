@@ -37,7 +37,9 @@ public class ColumnServiceImpl extends ServiceImpl<ColumnDao, Column> implements
     }
 
     @Override
-    public List<Column> listColumn(RequestVO requestVo) {
+    public List<Column> listColumn(@NotNull RequestVO requestVo) {
+        //columnId 作为 pid 条件传入
+        //根节点栏目id为0
         long pid = requestVo.getColumnId() == null ? 0 : requestVo.getColumnId();
         //默认根栏目层级,未删除的条件
         List<Column> columnList = baseMapper.selectColumnAndTypeByPid(pid);
