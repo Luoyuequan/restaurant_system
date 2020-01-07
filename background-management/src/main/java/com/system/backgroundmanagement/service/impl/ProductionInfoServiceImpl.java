@@ -7,11 +7,15 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.system.backgroundmanagement.common.*;
 import com.system.backgroundmanagement.dao.ProductionInfoDao;
+import com.system.backgroundmanagement.entity.Column;
 import com.system.backgroundmanagement.entity.ProductionInfo;
+import com.system.backgroundmanagement.service.IColumnService;
 import com.system.backgroundmanagement.service.IProductionInfoService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,6 +35,9 @@ import java.util.concurrent.atomic.AtomicReference;
 @Slf4j
 public class ProductionInfoServiceImpl extends ServiceImpl<ProductionInfoDao, ProductionInfo>
         implements IProductionInfoService {
+    @Autowired
+    IColumnService columnService;
+
     @Override
     public ResponseVO listProInfo(PageVO pageVO, RequestVO requestVo) {
         try {
@@ -43,8 +50,15 @@ public class ProductionInfoServiceImpl extends ServiceImpl<ProductionInfoDao, Pr
             //条件查询+分页
             IPage<ProductionInfo> productionInfoList = page(infoPage, infoQuery);
             List<ProductionInfo> infoList = productionInfoList.getRecords();
+            //无数据
+            if (CollectionUtils.isEmpty(infoList)) {
+                return ResponseVO.error(MessageEnum.DATA_NO);
+            }
+            //获取产品所属栏目相关信息,代替多表查询
             for (ProductionInfo p : infoList) {
-
+                Long columnId = p.getColumnId();
+                Column columnInfo = columnService.getColumnInfoById(columnId);
+                p.setColumn(columnInfo);
             }
             return ResponseVO.success(MessageEnum.FIND_SUCCESS, productionInfoList);
         } catch (Exception e) {
@@ -80,7 +94,6 @@ public class ProductionInfoServiceImpl extends ServiceImpl<ProductionInfoDao, Pr
                 log.warn("批量删除失败,ids:{}", Arrays.toString(ids));
             }
         } catch (Exception e) {
-//            throw e;
             log.warn("批量删除异常,ids:{}", Arrays.toString(ids), e.getCause());
         }
         return removeResult.get();
@@ -99,6 +112,10 @@ public class ProductionInfoServiceImpl extends ServiceImpl<ProductionInfoDao, Pr
             if (!updateResult) {
                 log.warn("访问量增加失败,productionInfo:{}", productionInfo);
             }
+            //获取产品所属栏目相关信息,代替多表查询
+            Long columnId = productionInfo.getColumnId();
+            Column columnInfo = columnService.getColumnInfoById(columnId);
+            productionInfo.setColumn(columnInfo);
         }
         return productionInfo;
     }

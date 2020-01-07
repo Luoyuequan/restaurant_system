@@ -37,9 +37,6 @@ public class MessageServiceImpl extends ServiceImpl<MessageDao, Message> impleme
         if (requestVo.getName() != null) {
             messageQuery.likeRight("name", requestVo.getName());
         }
-//        //升序
-//        String[] orderColumnName = requestVo.getSortColumnName().split(",");
-//        messageQuery.orderByAsc(orderColumnName);
         //设置当前页码和每页数量
         IPage<Message> messagePage = new Page<>(pageVO.getPage(), pageVO.getSize());
         //条件查询+分页

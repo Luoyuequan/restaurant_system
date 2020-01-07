@@ -47,6 +47,9 @@ public class RequestVO {
      * 是否置顶
      */
     private Boolean top;
+
+    private Long startTime;
+    private Long endTime;
     /**
      * 排序列名，优先级规则等同数据库order by 规则
      * 多个列名由英文,分割

@@ -9,7 +9,11 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -40,8 +44,18 @@ public class ProductionInfoController {
      * @return 响应vo
      */
     @PostMapping("add")
-    public ResponseVO saveProInfo(@NotNull @RequestBody ProductionInfo proInfo) {
-        //校验新增的留言消息的非空参数是否符合
+    public ResponseVO saveProInfo(@NotNull @RequestBody ProductionInfo proInfo, @RequestParam(name = "img") MultipartFile multipartFile) {
+        String filename = multipartFile.getOriginalFilename();
+        long fileSize = multipartFile.getSize();
+        try {
+            byte[] fileBytes = multipartFile.getBytes();
+            // TODO: 2020/01/07 文件上传，读取配置文件信息，保存到项目路径下
+//            new ConfigurationSource.Resource().
+            OutputStream stream = new FileOutputStream("");
+        } catch (IOException e) {
+            log.warn("file upload waring", e.getCause());
+        }
+        //校验新增的产品信息的非空参数是否符合
         boolean checked = proInfo.getTitle() == null || proInfo.getColumnId() == null ||
                 proInfo.getRankValue() == null || proInfo.getSimpleInfo() == null;
         if (checked) {

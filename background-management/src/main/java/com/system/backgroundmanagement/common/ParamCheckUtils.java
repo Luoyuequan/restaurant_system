@@ -29,7 +29,7 @@ public class ParamCheckUtils {
      */
     @Nullable
     @Contract("null, _ -> !null")
-    public static ResponseVO checkBatchIds(String ids, List<Number> idList) {
+    public static ResponseVO checkBatchIds(String ids, List<Long> idList) {
         if (ids == null) {
             return ResponseVO.error(MessageEnum.VARIABLE_MISS_ERROR);
         }
@@ -41,7 +41,7 @@ public class ParamCheckUtils {
         //转型并且校验接收的参数格式是否非法
         for (String s : strings) {
             try {
-                Long id = Long.valueOf(s);
+                long id = Long.parseLong(s);
                 if (id <= 0) {
                     return ResponseVO.error(MessageEnum.VARIABLE_INVALID_ERROR);
                 }
@@ -67,7 +67,7 @@ public class ParamCheckUtils {
     @Nullable
     @Contract("null -> !null")
     public static ResponseVO checkValues(Object... values) {
-        if (values == null) {
+        if (ArraysUtils.isEmpty(values)) {
             return ResponseVO.error(MessageEnum.VARIABLE_MISS_ERROR);
         }
         //检查多个value是否非空
