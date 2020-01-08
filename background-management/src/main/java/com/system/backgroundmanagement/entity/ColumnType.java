@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 /**
@@ -28,11 +29,11 @@ public class ColumnType implements Serializable {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
-
     /**
      * 栏目类型值
      */
     @TableField("`value`")
+    @NotBlank(message = "栏目类型值不能空")
     private String value;
 
 

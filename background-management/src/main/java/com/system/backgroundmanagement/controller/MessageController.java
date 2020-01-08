@@ -59,7 +59,7 @@ public class MessageController {
         } catch (Exception e) {
             log.warn("留言消息添加异常,{}", message, e.getCause());
         }
-        return saveResult.get() ? ResponseVO.success(MessageEnum.ADD_SUCCESS) : ResponseVO.success(MessageEnum.ADD_ERROR);
+        return saveResult.get() ? ResponseVO.success(MessageEnum.ADD_SUCCESS) : ResponseVO.error(MessageEnum.ADD_ERROR);
     }
 
     /**
@@ -121,6 +121,6 @@ public class MessageController {
         }
         //根据id批量删除
         return messageService.deleteByIds(idList) ?
-                ResponseVO.success(MessageEnum.DELETE_SUCCESS) : ResponseVO.success(MessageEnum.DELETE_ERROR);
+                ResponseVO.success(MessageEnum.DELETE_SUCCESS) : ResponseVO.error(MessageEnum.DELETE_ERROR);
     }
 }

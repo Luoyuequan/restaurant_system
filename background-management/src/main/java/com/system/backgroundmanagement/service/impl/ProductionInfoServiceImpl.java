@@ -6,20 +6,26 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.system.backgroundmanagement.common.*;
+import com.system.backgroundmanagement.config.ProductFileUploadConfig;
 import com.system.backgroundmanagement.dao.ProductionInfoDao;
 import com.system.backgroundmanagement.entity.Column;
 import com.system.backgroundmanagement.entity.ProductionInfo;
 import com.system.backgroundmanagement.service.IColumnService;
 import com.system.backgroundmanagement.service.IProductionInfoService;
+import com.system.backgroundmanagement.service.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -38,6 +44,9 @@ public class ProductionInfoServiceImpl extends ServiceImpl<ProductionInfoDao, Pr
     @Autowired
     IColumnService columnService;
 
+    @Autowired
+    private ProductFileUploadConfig productFileUploadConfig;
+
     @Override
     public ResponseVO listProInfo(PageVO pageVO, RequestVO requestVo) {
         try {
@@ -52,7 +61,7 @@ public class ProductionInfoServiceImpl extends ServiceImpl<ProductionInfoDao, Pr
             List<ProductionInfo> infoList = productionInfoList.getRecords();
             //无数据
             if (CollectionUtils.isEmpty(infoList)) {
-                return ResponseVO.error(MessageEnum.DATA_NO);
+                return ResponseVO.success(MessageEnum.DATA_NO);
             }
             //获取产品所属栏目相关信息,代替多表查询
             for (ProductionInfo p : infoList) {
@@ -61,9 +70,11 @@ public class ProductionInfoServiceImpl extends ServiceImpl<ProductionInfoDao, Pr
                 p.setColumn(columnInfo);
             }
             return ResponseVO.success(MessageEnum.FIND_SUCCESS, productionInfoList);
-        } catch (Exception e) {
-            log.warn("查询失败,requestVo:{}", requestVo, e.getCause());
-            return ResponseVO.error(MessageEnum.FIND_ERROR);
+        } catch (ServiceException e) {
+            String msg = MessageEnum.FIND_ERROR.getMsg() + ",requestVo:" + requestVo;
+            ServiceException serviceException = new ServiceException(msg);
+            serviceException.addSuppressed(e);
+            throw serviceException;
         }
     }
 
@@ -75,12 +86,14 @@ public class ProductionInfoServiceImpl extends ServiceImpl<ProductionInfoDao, Pr
             updateWrapper.ge("id", proInfo.getId());
             removeResult.set(update(proInfo, updateWrapper));
             if (!removeResult.get()) {
-                log.warn("产品信息修改失败,proInfo:{}", proInfo);
+                String msg = MessageEnum.UPDATE_ERROR.getMsg() + ",产品信息proInfo:" + proInfo;
+                throw new ServiceException(msg);
             }
+            return removeResult.get();
         } catch (Exception e) {
-            log.warn("产品信息修改失败,proInfo:{}", proInfo, e.getCause());
+            String msg = MessageEnum.UPDATE_ERROR.getMsg() + ",产品信息proInfo:" + proInfo;
+            throw new ServiceException(msg, e);
         }
-        return removeResult.get();
     }
 
     @Override
@@ -91,10 +104,12 @@ public class ProductionInfoServiceImpl extends ServiceImpl<ProductionInfoDao, Pr
         try {
             removeResult.set(this.removeByIds(idList));
             if (!removeResult.get()) {
-                log.warn("批量删除失败,ids:{}", Arrays.toString(ids));
+                String msg = MessageEnum.DELETE_ERROR.getMsg() + ",ids:" + Arrays.toString(ids);
+                throw new ServiceException(msg);
             }
         } catch (Exception e) {
-            log.warn("批量删除异常,ids:{}", Arrays.toString(ids), e.getCause());
+            String msg = MessageEnum.DELETE_ERROR.getMsg() + ",ids:" + Arrays.toString(ids);
+            throw new ServiceException(msg, e);
         }
         return removeResult.get();
     }
@@ -110,7 +125,8 @@ public class ProductionInfoServiceImpl extends ServiceImpl<ProductionInfoDao, Pr
             productionInfo.setClickNumber(clickNumber.get());
             boolean updateResult = updateProInfo(productionInfo);
             if (!updateResult) {
-                log.warn("访问量增加失败,productionInfo:{}", productionInfo);
+                String msg = MessageEnum.FIND_ERROR.getMsg() + ",访问量增加失败,productionInfo:" + productionInfo;
+                throw new ServiceException(msg);
             }
             //获取产品所属栏目相关信息,代替多表查询
             Long columnId = productionInfo.getColumnId();
@@ -118,5 +134,40 @@ public class ProductionInfoServiceImpl extends ServiceImpl<ProductionInfoDao, Pr
             productionInfo.setColumn(columnInfo);
         }
         return productionInfo;
+    }
+
+    @Override
+    public boolean saveProInfoAndImage(ProductionInfo proInfo, @NotNull MultipartFile imgFile) {
+        try {
+            String fileUploadPath = productFileUploadConfig.getPath();
+            Long sizeMax = Long.valueOf(productFileUploadConfig.getSize());
+            long fileSize = imgFile.getSize();
+            //File size exceeds specified limit
+            if (fileSize > sizeMax) {
+                throw new ServiceException(MessageEnum.FILE_SIZE_MAX);
+            }
+            byte[] fileBytes = imgFile.getBytes();
+            String filename = imgFile.getOriginalFilename();
+            //generator new file name randomly
+            String newFileName = System.currentTimeMillis() +
+                    UUID.randomUUID().toString().replace("-", "") + filename;
+            boolean saveFileResult = FileHandlerUtils.saveFileToDisk(fileBytes, newFileName, fileUploadPath);
+            //file save result to disk
+            if (saveFileResult) {
+                //save production info to database,save result
+                boolean saveInfoResult = save(proInfo.setImg(fileUploadPath + newFileName));
+                //production info save failed
+                if (!saveInfoResult) {
+                    //delete upload file
+                    boolean deleteFile = FileHandlerUtils.deleteFileFromDisk(fileUploadPath + newFileName);
+                    return false;
+                }
+                return true;
+            }
+            //file save failed
+            return false;
+        } catch (IOException e) {
+            throw new ServiceException(MessageEnum.FILE_UPLOAD_ERROR, e);
+        }
     }
 }

@@ -5,6 +5,7 @@ import com.system.backgroundmanagement.common.PageVO;
 import com.system.backgroundmanagement.common.RequestVO;
 import com.system.backgroundmanagement.common.ResponseVO;
 import com.system.backgroundmanagement.entity.ProductionInfo;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -53,4 +54,13 @@ public interface IProductionInfoService extends IService<ProductionInfo> {
      * @return
      */
     ProductionInfo getProInfo(Long id);
+
+    /**
+     * 保存产品信息和相关图片
+     *
+     * @param proInfo 产品信息的对象
+     * @param imgFile 图片文件对象
+     * @return 保存结果
+     */
+    boolean saveProInfoAndImage(ProductionInfo proInfo, MultipartFile imgFile);
 }

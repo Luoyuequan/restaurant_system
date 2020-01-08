@@ -8,12 +8,10 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -31,11 +29,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Slf4j
 public class ProductionInfoController {
 
-    private final IProductionInfoService proInfoService;
 
-    public ProductionInfoController(IProductionInfoService proInfoService) {
-        this.proInfoService = proInfoService;
-    }
+    @Autowired
+    private IProductionInfoService proInfoService;
+
 
     /**
      * 产品信息添加接口
@@ -44,17 +41,9 @@ public class ProductionInfoController {
      * @return 响应vo
      */
     @PostMapping("add")
-    public ResponseVO saveProInfo(@NotNull @RequestBody ProductionInfo proInfo, @RequestParam(name = "img") MultipartFile multipartFile) {
-        String filename = multipartFile.getOriginalFilename();
-        long fileSize = multipartFile.getSize();
-        try {
-            byte[] fileBytes = multipartFile.getBytes();
-            // TODO: 2020/01/07 文件上传，读取配置文件信息，保存到项目路径下
-//            new ConfigurationSource.Resource().
-            OutputStream stream = new FileOutputStream("");
-        } catch (IOException e) {
-            log.warn("file upload waring", e.getCause());
-        }
+    public ResponseVO saveProInfo(
+            @RequestBody ProductionInfo proInfo, MultipartFile imgFile
+    ) {
         //校验新增的产品信息的非空参数是否符合
         boolean checked = proInfo.getTitle() == null || proInfo.getColumnId() == null ||
                 proInfo.getRankValue() == null || proInfo.getSimpleInfo() == null;
@@ -63,11 +52,11 @@ public class ProductionInfoController {
         }
         AtomicBoolean saveResult = new AtomicBoolean(false);
         try {
-            saveResult.set(proInfoService.save(proInfo));
+            saveResult.set(proInfoService.saveProInfoAndImage(proInfo, imgFile));
         } catch (Exception e) {
             log.warn("产品信息添加异常,{}", proInfo, e.getCause());
         }
-        return saveResult.get() ? ResponseVO.success(MessageEnum.ADD_SUCCESS) : ResponseVO.success(MessageEnum.ADD_ERROR);
+        return saveResult.get() ? ResponseVO.success(MessageEnum.ADD_SUCCESS) : ResponseVO.error(MessageEnum.ADD_ERROR);
     }
 
 
@@ -78,7 +67,7 @@ public class ProductionInfoController {
      * @return requestVo
      */
     @DeleteMapping("del")
-    public ResponseVO delProInfo(@NotNull RequestVO requestVo) {
+    public ResponseVO delProInfo(@NotNull(value = "参数缺失") RequestVO requestVo) {
         List<Long> idList = new ArrayList<>();
         ResponseVO checkResult = ParamCheckUtils.checkBatchIds(requestVo.getIds(), idList);
         if (checkResult != null) {
@@ -86,7 +75,7 @@ public class ProductionInfoController {
         }
         //根据id批量删除
         return proInfoService.deleteByIds(idList) ?
-                ResponseVO.success(MessageEnum.DELETE_SUCCESS) : ResponseVO.success(MessageEnum.DELETE_ERROR);
+                ResponseVO.success(MessageEnum.DELETE_SUCCESS) : ResponseVO.error(MessageEnum.DELETE_ERROR);
     }
 
     /**
@@ -109,7 +98,7 @@ public class ProductionInfoController {
      * @return requestVo
      */
     @GetMapping("get")
-    public ResponseVO getProInfo(@NotNull RequestVO requestVo) {
+    public ResponseVO getProInfo(@NotNull(value = "参数缺失") RequestVO requestVo) {
         Long id = requestVo.getId();
         if (id == null) {
             return ResponseVO.error(MessageEnum.VARIABLE_MISS_ERROR);
@@ -137,6 +126,6 @@ public class ProductionInfoController {
             return ResponseVO.error(MessageEnum.VARIABLE_MISS_ERROR);
         }
         return proInfoService.updateProInfo(proInfo) ?
-                ResponseVO.success(MessageEnum.ACTION_SUCCESS) : ResponseVO.success(MessageEnum.UPDATE_ERROR);
+                ResponseVO.success(MessageEnum.ACTION_SUCCESS) : ResponseVO.error(MessageEnum.UPDATE_ERROR);
     }
 }

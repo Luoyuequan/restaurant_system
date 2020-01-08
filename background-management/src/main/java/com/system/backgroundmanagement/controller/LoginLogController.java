@@ -60,6 +60,6 @@ public class LoginLogController implements IController<LoginLog> {
         }
         //根据id批量删除
         return loginLogService.deleteByIds(idList) ?
-                ResponseVO.success(MessageEnum.DELETE_SUCCESS) : ResponseVO.success(MessageEnum.DELETE_ERROR);
+                ResponseVO.success(MessageEnum.DELETE_SUCCESS) : ResponseVO.error(MessageEnum.DELETE_ERROR);
     }
 }

@@ -48,12 +48,10 @@ public class RequestVO {
      */
     private Boolean top;
 
+    //    @Past(message = "起始时间范围值不符合")
     private Long startTime;
+
+    //    @Past(message = "截止时间范围值不符合")
     private Long endTime;
-    /**
-     * 排序列名，优先级规则等同数据库order by 规则
-     * 多个列名由英文,分割
-     */
-//    private String sortColumnName;
 
 }

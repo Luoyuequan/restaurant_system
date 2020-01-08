@@ -73,7 +73,7 @@ public class ColumnController implements IController<Column> {
             return responseVO;
         }
         return columnService.updateColumn(column) ?
-                ResponseVO.success(MessageEnum.ACTION_SUCCESS) : ResponseVO.success(MessageEnum.UPDATE_ERROR);
+                ResponseVO.success(MessageEnum.ACTION_SUCCESS) : ResponseVO.error(MessageEnum.UPDATE_ERROR);
     }
 
     @PostMapping("add")
@@ -86,7 +86,7 @@ public class ColumnController implements IController<Column> {
         }
         boolean saveResult = columnService.save(column);
         return saveResult ? ResponseVO.success(MessageEnum.ADD_SUCCESS) :
-                ResponseVO.success(MessageEnum.ADD_ERROR);
+                ResponseVO.error(MessageEnum.ADD_ERROR);
     }
 
     /**
@@ -106,6 +106,6 @@ public class ColumnController implements IController<Column> {
         }
         //根据id批量删除
         return columnService.deleteByIds(idList) ? ResponseVO.success(MessageEnum.DELETE_SUCCESS) :
-                ResponseVO.success(MessageEnum.DELETE_ERROR);
+                ResponseVO.error(MessageEnum.DELETE_ERROR);
     }
 }

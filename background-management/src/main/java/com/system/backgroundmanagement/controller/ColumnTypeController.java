@@ -84,7 +84,7 @@ public class ColumnTypeController implements IController<ColumnType> {
             return responseVO;
         }
         return columnTypeService.updateColumnTypeInfo(columnType) ?
-                ResponseVO.success(MessageEnum.ACTION_SUCCESS) : ResponseVO.success(MessageEnum.UPDATE_ERROR);
+                ResponseVO.success(MessageEnum.ACTION_SUCCESS) : ResponseVO.error(MessageEnum.UPDATE_ERROR);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class ColumnTypeController implements IController<ColumnType> {
         } catch (Exception e) {
             log.warn("栏目类型信息添加异常,{}", columnType, e.getCause());
         }
-        return saveResult.get() ? ResponseVO.success(MessageEnum.ADD_SUCCESS) : ResponseVO.success(MessageEnum.ADD_ERROR);
+        return saveResult.get() ? ResponseVO.success(MessageEnum.ADD_SUCCESS) : ResponseVO.error(MessageEnum.ADD_ERROR);
     }
 
     /**
@@ -122,6 +122,6 @@ public class ColumnTypeController implements IController<ColumnType> {
         }
         //根据id批量删除
         return columnTypeService.deleteByIds(idList) ?
-                ResponseVO.success(MessageEnum.DELETE_SUCCESS) : ResponseVO.success(MessageEnum.DELETE_ERROR);
+                ResponseVO.success(MessageEnum.DELETE_SUCCESS) : ResponseVO.error(MessageEnum.DELETE_ERROR);
     }
 }

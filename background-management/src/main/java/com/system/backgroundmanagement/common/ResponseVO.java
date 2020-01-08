@@ -2,6 +2,8 @@ package com.system.backgroundmanagement.common;
 
 import lombok.*;
 import lombok.experimental.Accessors;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * RequestVO（View Object）：显示层对象，通常是 Web 向模板渲染引擎层传输的对象。
@@ -17,6 +19,9 @@ import lombok.experimental.Accessors;
 public class ResponseVO {
     /**
      * 状态码
+     * 成功1
+     * 失败0
+     * 参数无效400
      */
     private Integer code;
     /**
@@ -28,38 +33,26 @@ public class ResponseVO {
      */
     private Object data;
 
-    /**
-     * 无数据构造
-     *
-     * @param code 响应码
-     * @param msg  响应消息
-     */
-    private ResponseVO(Integer code, String msg) {
-        this.code = code;
-        this.msg = msg;
-    }
-
-    private static ResponseVO getInstance(Integer code, String msg, Object data) {
-        return new ResponseVO(code, msg, data);
-    }
 
     /**
      * 成功响应，有响应数据
      *
      * @param messageEnum 消息
      * @param data        反馈数据
-     * @return vo
+     * @return responseVo
      */
-    public static ResponseVO success(MessageEnum messageEnum, Object data) {
-        return getInstance(messageEnum.getCode(), messageEnum.getMsg(), data);
+    @NotNull
+    public static ResponseVO success(@NotNull MessageEnum messageEnum, Object data) {
+        return getInstance(1, messageEnum.getMsg(), data);
     }
 
     /**
      * 成功响应，无响应数据
      *
      * @param messageEnum 消息
-     * @return vo
+     * @return responseVo
      */
+    @NotNull
     public static ResponseVO success(MessageEnum messageEnum) {
         return success(messageEnum, null);
     }
@@ -68,10 +61,34 @@ public class ResponseVO {
      * 失败响应，无响应数据
      *
      * @param messageEnum 消息
-     * @return vo
+     * @return responseVo
      */
+    @NotNull
     public static ResponseVO error(MessageEnum messageEnum) {
         return error(messageEnum, null);
+    }
+
+    /**
+     * 异常响应消息
+     *
+     * @param message 消息
+     * @return responseVo
+     */
+    @NotNull
+    public static ResponseVO exception(String message) {
+        return getInstance(0, message, null);
+    }
+
+    /**
+     * 异常响应消息
+     *
+     * @param message 消息
+     * @param data    异常数据
+     * @return responseVo
+     */
+    @NotNull
+    public static ResponseVO exception(String message, Object data) {
+        return getInstance(400, message, data);
     }
 
     /**
@@ -79,9 +96,24 @@ public class ResponseVO {
      *
      * @param messageEnum 消息
      * @param data        响应数据
-     * @return vo
+     * @return responseVo
      */
-    public static ResponseVO error(MessageEnum messageEnum, Object data) {
-        return getInstance(messageEnum.getCode(), messageEnum.getMsg(), data);
+    @NotNull
+    public static ResponseVO error(@NotNull MessageEnum messageEnum, Object data) {
+        return getInstance(0, messageEnum.getMsg(), data);
+    }
+
+    /**
+     * 私有 实例
+     *
+     * @param code 状态码
+     * @param msg  响应消息
+     * @param data 响应数据
+     * @return responseVo
+     */
+    @NotNull
+    @Contract("_, _, _ -> new")
+    private static ResponseVO getInstance(Integer code, String msg, Object data) {
+        return new ResponseVO(code, msg, data);
     }
 }

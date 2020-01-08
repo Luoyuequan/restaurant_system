@@ -53,7 +53,7 @@ public class NewsController {
         } catch (Exception e) {
             log.warn("新闻动态添加异常,{}", newsInfo, e.getCause());
         }
-        return saveResult.get() ? ResponseVO.success(MessageEnum.ADD_SUCCESS) : ResponseVO.success(MessageEnum.ADD_ERROR);
+        return saveResult.get() ? ResponseVO.success(MessageEnum.ADD_SUCCESS) : ResponseVO.error(MessageEnum.ADD_ERROR);
     }
 
 
@@ -72,7 +72,7 @@ public class NewsController {
         }
         //根据id批量删除
         return newsService.deleteByIds(idList) ?
-                ResponseVO.success(MessageEnum.DELETE_SUCCESS) : ResponseVO.success(MessageEnum.DELETE_ERROR);
+                ResponseVO.success(MessageEnum.DELETE_SUCCESS) : ResponseVO.error(MessageEnum.DELETE_ERROR);
     }
 
     /**
@@ -123,6 +123,6 @@ public class NewsController {
             return ResponseVO.error(MessageEnum.VARIABLE_MISS_ERROR);
         }
         return newsService.updateNewsInfo(newsInfo) ?
-                ResponseVO.success(MessageEnum.ACTION_SUCCESS) : ResponseVO.success(MessageEnum.UPDATE_ERROR);
+                ResponseVO.success(MessageEnum.ACTION_SUCCESS) : ResponseVO.error(MessageEnum.UPDATE_ERROR);
     }
 }

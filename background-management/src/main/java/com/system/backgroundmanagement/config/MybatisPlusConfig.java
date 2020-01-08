@@ -1,7 +1,6 @@
 package com.system.backgroundmanagement.config;
 
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
  * @time 下午 07:56
  */
 @Configuration
-@MapperScan("com.system.backgroundmanagement.dao.*")
+//@MapperScan("com.system.backgroundmanagement.dao")
 public class MybatisPlusConfig {
 
     @Bean

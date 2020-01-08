@@ -3,7 +3,7 @@
     <!-- 系统项目名 -->
     <property name="APP_NAME" value="background-management"/>
     <!--定义日志输出目录-->
-    <property name="LOG_HOME" value="background-management/logs"/>
+    <property name="LOG_HOME" value="logs"/>
     <property name="pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
     <property name="charset" value="utf-8"/>
     <!-- 控制台输出的日志格式 -->
