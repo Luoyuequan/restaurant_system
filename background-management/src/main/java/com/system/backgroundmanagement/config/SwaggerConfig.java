@@ -30,7 +30,7 @@ public class SwaggerConfig {
                 .apiInfo(apiInfo);
     }
 
-    @Bean(name = "apiInfoBuilder")
+    @Bean
     public ApiInfo createApiInfoBuilder() {
         return new ApiInfoBuilder()
                 .title("Background Management Api")

@@ -14,7 +14,6 @@ import com.system.backgroundmanagement.service.IColumnService;
 import com.system.backgroundmanagement.service.IProductionInfoService;
 import com.system.backgroundmanagement.service.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,9 +71,7 @@ public class ProductionInfoServiceImpl extends ServiceImpl<ProductionInfoDao, Pr
             return ResponseVO.success(MessageEnum.FIND_SUCCESS, productionInfoList);
         } catch (ServiceException e) {
             String msg = MessageEnum.FIND_ERROR.getMsg() + ",requestVo:" + requestVo;
-            ServiceException serviceException = new ServiceException(msg);
-            serviceException.addSuppressed(e);
-            throw serviceException;
+            throw new ServiceException(msg, e);
         }
     }
 
@@ -90,33 +87,27 @@ public class ProductionInfoServiceImpl extends ServiceImpl<ProductionInfoDao, Pr
                 throw new ServiceException(msg);
             }
             return removeResult.get();
-        } catch (Exception e) {
-            String msg = MessageEnum.UPDATE_ERROR.getMsg() + ",产品信息proInfo:" + proInfo;
-            throw new ServiceException(msg, e);
+        } catch (ServiceException e) {
+            throw new ServiceException(e);
         }
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public boolean deleteByIds(List<Long> idList) {
+    @Transactional(rollbackFor = ServiceException.class)
+    public boolean deleteByIds(List<Long> idList) throws ServiceException {
         Long[] ids = idList.toArray(new Long[0]);
         AtomicBoolean removeResult = new AtomicBoolean(false);
-        try {
-            removeResult.set(this.removeByIds(idList));
-            if (!removeResult.get()) {
-                String msg = MessageEnum.DELETE_ERROR.getMsg() + ",ids:" + Arrays.toString(ids);
-                throw new ServiceException(msg);
-            }
-        } catch (Exception e) {
+        removeResult.set(this.removeByIds(idList));
+        if (!removeResult.get()) {
             String msg = MessageEnum.DELETE_ERROR.getMsg() + ",ids:" + Arrays.toString(ids);
-            throw new ServiceException(msg, e);
+            throw new ServiceException(msg);
         }
         return removeResult.get();
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public ProductionInfo getProInfo(Long id) {
+    @Transactional(rollbackFor = Exception.class, readOnly = true)
+    public ProductionInfo getProInfo(Long id) throws ServiceException {
         ProductionInfo productionInfo = getById(id);
         if (productionInfo != null) {
             AtomicReference<Long> clickNumber = new AtomicReference<>(productionInfo.getClickNumber());
@@ -137,37 +128,34 @@ public class ProductionInfoServiceImpl extends ServiceImpl<ProductionInfoDao, Pr
     }
 
     @Override
-    public boolean saveProInfoAndImage(ProductionInfo proInfo, @NotNull MultipartFile imgFile) {
+    public boolean saveProInfoAndImage(ProductionInfo proInfo, MultipartFile imgFile) {
         try {
             String fileUploadPath = productFileUploadConfig.getPath();
-            Long sizeMax = Long.valueOf(productFileUploadConfig.getSize());
+            long sizeMax = Long.parseLong(productFileUploadConfig.getSize());
             long fileSize = imgFile.getSize();
             //File size exceeds specified limit
-            if (fileSize > sizeMax) {
+            if (fileSize >= sizeMax) {
                 throw new ServiceException(MessageEnum.FILE_SIZE_MAX);
             }
-            byte[] fileBytes = imgFile.getBytes();
             String filename = imgFile.getOriginalFilename();
             //generator new file name randomly
             String newFileName = System.currentTimeMillis() +
                     UUID.randomUUID().toString().replace("-", "") + filename;
-            boolean saveFileResult = FileHandlerUtils.saveFileToDisk(fileBytes, newFileName, fileUploadPath);
             //file save result to disk
-            if (saveFileResult) {
-                //save production info to database,save result
-                boolean saveInfoResult = save(proInfo.setImg(fileUploadPath + newFileName));
-                //production info save failed
-                if (!saveInfoResult) {
-                    //delete upload file
-                    boolean deleteFile = FileHandlerUtils.deleteFileFromDisk(fileUploadPath + newFileName);
-                    return false;
-                }
-                return true;
+            FileHandlerUtils.saveFileToDisk(imgFile.getInputStream(), newFileName, fileUploadPath);
+            //save production info and image file to database,save result
+            boolean saveInfoResult = save(proInfo.setImg(fileUploadPath + newFileName));
+            //production info save failed
+            if (!saveInfoResult) {
+                //delete upload file
+                FileHandlerUtils.deleteFileFromDisk(fileUploadPath + newFileName);
+                throw new ServiceException(MessageEnum.ADD_SUCCESS);
             }
-            //file save failed
-            return false;
+            return true;
         } catch (IOException e) {
             throw new ServiceException(MessageEnum.FILE_UPLOAD_ERROR, e);
+        } catch (ServiceException e) {
+            throw new ServiceException(e);
         }
     }
 }

@@ -45,7 +45,7 @@ public class MessageController {
     @PostMapping("add")
     @ApiOperation("游客留言添加请求接口")
     @ApiImplicitParam(name = "message", value = "留言消息体", dataTypeClass = Message.class, required = true)
-    public ResponseVO save(@NotNull @RequestBody Message message, HttpServletRequest request) {
+    public ResponseVO save(@RequestBody Message message, HttpServletRequest request) {
         //校验新增的留言消息的非空参数是否符合
         boolean checked = message.getName() == null || message.getContent() == null;
         if (checked) {

@@ -4,7 +4,9 @@ package com.system.backgroundmanagement.controller;
 import com.system.backgroundmanagement.common.*;
 import com.system.backgroundmanagement.entity.ProductionInfo;
 import com.system.backgroundmanagement.service.IProductionInfoService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -27,22 +29,27 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @RestController
 @RequestMapping("/production-info")
 @Slf4j
+@Api(tags = "产品信息管理接口")
 public class ProductionInfoController {
 
 
     @Autowired
     private IProductionInfoService proInfoService;
 
-
     /**
-     * 产品信息添加接口
+     * 产品信息添加和文件上传接口
      *
      * @param proInfo 新的产品信息
      * @return 响应vo
      */
-    @PostMapping("add")
+    @PostMapping(path = "add", consumes = {"multipart/form-data"})
+    @ApiOperation("产品信息添加和文件上传接口")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "proInfo", value = "产品信息", dataTypeClass = ProductionInfo.class, required = true),
+            @ApiImplicitParam(name = "file", value = "附加文件", required = true)
+    })
     public ResponseVO saveProInfo(
-            @RequestBody ProductionInfo proInfo, MultipartFile imgFile
+            @RequestBody ProductionInfo proInfo, @RequestParam MultipartFile file
     ) {
         //校验新增的产品信息的非空参数是否符合
         boolean checked = proInfo.getTitle() == null || proInfo.getColumnId() == null ||
@@ -52,7 +59,7 @@ public class ProductionInfoController {
         }
         AtomicBoolean saveResult = new AtomicBoolean(false);
         try {
-            saveResult.set(proInfoService.saveProInfoAndImage(proInfo, imgFile));
+            saveResult.set(proInfoService.saveProInfoAndImage(proInfo, file));
         } catch (Exception e) {
             log.warn("产品信息添加异常,{}", proInfo, e.getCause());
         }
@@ -67,7 +74,11 @@ public class ProductionInfoController {
      * @return requestVo
      */
     @DeleteMapping("del")
-    public ResponseVO delProInfo(@NotNull(value = "参数缺失") RequestVO requestVo) {
+    @ApiOperation("删除指定id集合的产品信息接口")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "requestVo", value = "请求信息", dataTypeClass = RequestVO.class, required = true),
+    })
+    public ResponseVO delProInfo(RequestVO requestVo) {
         List<Long> idList = new ArrayList<>();
         ResponseVO checkResult = ParamCheckUtils.checkBatchIds(requestVo.getIds(), idList);
         if (checkResult != null) {
@@ -87,18 +98,26 @@ public class ProductionInfoController {
      * @return 响应数据
      */
     @GetMapping("list")
+    @ApiOperation(value = "产品信息列表接口", notes = "根据 title，recommend，top 筛选分页(非必须)")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "requestVo", value = "请求信息", dataTypeClass = RequestVO.class),
+    })
     public ResponseVO listProInfo(PageVO pageVO, RequestVO requestVo) {
         return proInfoService.listProInfo(pageVO, requestVo);
     }
 
     /**
-     * 获取指定id留言消息
+     * 获取指定id产品信息
      *
      * @param requestVo 请求参数(id)
      * @return requestVo
      */
     @GetMapping("get")
-    public ResponseVO getProInfo(@NotNull(value = "参数缺失") RequestVO requestVo) {
+    @ApiOperation(value = "获取指定id产品信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "requestVo", value = "请求信息", dataTypeClass = RequestVO.class),
+    })
+    public ResponseVO getProInfo(RequestVO requestVo) {
         Long id = requestVo.getId();
         if (id == null) {
             return ResponseVO.error(MessageEnum.VARIABLE_MISS_ERROR);

@@ -1,6 +1,8 @@
 package com.system.backgroundmanagement.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -19,6 +21,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("message")
+@ApiModel("留言消息")
 public class Message implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -27,24 +30,28 @@ public class Message implements Serializable {
      * 留言消息id
      */
     @TableId(value = "id", type = IdType.AUTO)
+    @ApiModelProperty("留言消息id")
     private Long id;
 
     /**
      * 称呼
      */
     @TableField("name")
+    @ApiModelProperty("称呼")
     private String name;
 
     /**
      * 电子邮件
      */
     @TableField("email")
+    @ApiModelProperty("称呼")
     private String email;
 
     /**
      * 联系电话
      */
     @TableField("tel")
+    @ApiModelProperty("联系电话")
     private String tel;
 
     /**
@@ -57,6 +64,7 @@ public class Message implements Serializable {
      * 留言内容
      */
     @TableField("content")
+    @ApiModelProperty(value = "留言内容", required = true, example = "demo")
     private String content;
 
     /**

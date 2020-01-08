@@ -1,10 +1,10 @@
 package com.system.backgroundmanagement.common;
 
-import com.system.backgroundmanagement.service.exception.ServiceException;
-
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 /**
  * 文件相关处理工具类
@@ -16,42 +16,21 @@ public class FileHandlerUtils {
     /**
      * 保存文件到磁盘
      *
-     * @param fileBytes 文件字节流
-     * @param fileName  保存文件的名
-     * @param savePath  保存路径
-     * @return 保存结果
-     * @throws IOException IO异常
+     * @param file     文件字节流
+     * @param fileName 保存文件的名
+     * @param savePath 保存路径
      */
-    public static boolean saveFileToDisk(byte[] fileBytes, String fileName, String savePath) throws IOException {
-        File file = new File(savePath);
-        System.out.println(file.getCanonicalPath());
-        boolean exists = file.exists();
-        if (!exists) {
-            if (!file.mkdirs()) {
-                throw new IOException("dir create failed");
-            }
-        }
-        try (FileOutputStream outputStream = new FileOutputStream(savePath + fileName)) {
-            outputStream.write(fileBytes);
-            return true;
-        }
+    public static void saveFileToDisk(InputStream file, String fileName, String savePath) throws IOException {
+        Files.copy(file, Paths.get(savePath + fileName), StandardCopyOption.REPLACE_EXISTING);
     }
 
     /**
      * 从磁盘上删除指定路径的文件
      *
      * @param filePath 文件路径
-     * @return 删除结果
      */
-    public static boolean deleteFileFromDisk(String filePath) {
-        File file = new File(filePath);
-        if (file.isDirectory()) {
-            throw new ServiceException("the path is not file");
-        }
-        if (file.exists()) {
-            return file.delete();
-        }
-        return !file.exists();
+    public static void deleteFileFromDisk(String filePath) throws IOException {
+        Files.deleteIfExists(Paths.get(filePath));
     }
 
     ///////////////////////////////////////////////////////////////////////////
