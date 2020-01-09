@@ -44,7 +44,7 @@ public class MessageController {
      */
     @PostMapping("add")
     @ApiOperation("游客留言添加请求接口")
-    @ApiImplicitParam(name = "message", value = "留言消息体", dataTypeClass = Message.class, required = true)
+    @ApiImplicitParam(name = "message", value = "留言消息体", required = true)
     public ResponseVO save(@RequestBody Message message, HttpServletRequest request) {
         //校验新增的留言消息的非空参数是否符合
         boolean checked = message.getName() == null || message.getContent() == null;
@@ -113,7 +113,7 @@ public class MessageController {
      */
     @DeleteMapping("del")
     @ApiOperation("删除指定id集合的留言记录接口")
-    public ResponseVO deleteMessage(@NotNull RequestVO requestVo) {
+    public ResponseVO deleteMessage(RequestVO requestVo) {
         List<Long> idList = new ArrayList<>();
         ResponseVO checkResult = ParamCheckUtils.checkBatchIds(requestVo.getIds(), idList);
         if (checkResult != null) {

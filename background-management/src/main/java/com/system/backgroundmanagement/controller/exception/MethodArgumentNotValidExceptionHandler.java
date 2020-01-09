@@ -19,14 +19,7 @@ import java.util.List;
  */
 @RestControllerAdvice
 @Slf4j
-public class IllegalParameterExceptionHandler {
-
-
-    @ExceptionHandler(IllegalParameterException.class)
-    public ResponseVO handling(@NotNull IllegalParameterException e) {
-        log.warn(e.getMessage(), e.getCause());
-        return ResponseVO.exception(MessageEnum.VARIABLE_INVALID_ERROR.getMsg());
-    }
+public class MethodArgumentNotValidExceptionHandler {
 
     /**
      * 处理参数缺失,无效异常

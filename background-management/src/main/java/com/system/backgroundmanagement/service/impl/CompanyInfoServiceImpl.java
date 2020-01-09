@@ -30,7 +30,7 @@ public class CompanyInfoServiceImpl extends ServiceImpl<CompanyInfoDao, CompanyI
     public ResponseVO getCompanyInfo(RequestVO requestVo) {
         try {
             QueryWrapper<CompanyInfo> infoQuery = new QueryWrapper<>();
-            infoQuery.likeRight("name", requestVo.getName()).or().ge("id", requestVo.getId());
+            infoQuery.ge("id", requestVo.getId());
             CompanyInfo companyInfo = getOne(infoQuery);
             if (companyInfo == null) {
                 return ResponseVO.success(MessageEnum.DATA_NO);

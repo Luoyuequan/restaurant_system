@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 
@@ -65,6 +66,9 @@ public class ProductionInfo implements Serializable {
      */
     @TableField("img")
     private String img;
+
+    @TableField(exist = false)
+    private MultipartFile file;
 
     /**
      * 是否推荐，0未，1已

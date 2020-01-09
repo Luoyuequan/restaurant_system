@@ -8,12 +8,12 @@ import com.system.backgroundmanagement.common.ResponseVO;
 import com.system.backgroundmanagement.entity.CompanyInfo;
 import com.system.backgroundmanagement.service.ICompanyInfoService;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -44,7 +44,7 @@ public class CompanyInfoController {
     @PostMapping(path = "add")
     @ApiOperation("公司信息添加请求接口")
     @ApiImplicitParam(name = "companyInfo", value = "公司信息", dataTypeClass = CompanyInfo.class, required = true)
-    public ResponseVO save(@NotNull(message = "参数缺失") @Valid @RequestBody CompanyInfo companyInfo) {
+    public ResponseVO save(@Valid @RequestBody CompanyInfo companyInfo) {
         //校验新增的公司信息的非空参数是否符合
         ResponseVO responseVO = ParamCheckUtils.checkValues(
                 companyInfo.getName(), companyInfo.getContent(), companyInfo.getTel()
@@ -69,9 +69,12 @@ public class CompanyInfoController {
      */
     @GetMapping("get")
     @ApiOperation("获取指定公司信息")
-    public ResponseVO getCompanyInfo(@NotNull(message = "参数缺失") @Valid RequestVO requestVo) {
-        //检查id，name是否非空
-        ResponseVO responseVO = ParamCheckUtils.checkValues(requestVo.getId(), requestVo.getName());
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "id", required = true, defaultValue = "1", paramType = "integer")
+    })
+    public ResponseVO getCompanyInfo(RequestVO requestVo) {
+        //检查id是否非空
+        ResponseVO responseVO = ParamCheckUtils.checkValues(requestVo.getId());
         if (responseVO != null) {
             return responseVO;
         }
@@ -87,7 +90,7 @@ public class CompanyInfoController {
     @PutMapping("update")
     @ApiOperation("修改公司信息")
     @ApiImplicitParam(name = "companyInfo", value = "公司新的信息")
-    public ResponseVO updateCompanyInfo(@NotNull(message = "参数缺失") @RequestBody CompanyInfo companyInfo) {
+    public ResponseVO updateCompanyInfo(@RequestBody CompanyInfo companyInfo) {
         //检查公司信息id是否非空
         ResponseVO responseVO = ParamCheckUtils.checkValues(companyInfo.getId());
         if (responseVO != null) {

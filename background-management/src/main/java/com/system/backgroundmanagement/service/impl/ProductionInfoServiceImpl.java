@@ -106,7 +106,7 @@ public class ProductionInfoServiceImpl extends ServiceImpl<ProductionInfoDao, Pr
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class, readOnly = true)
+    @Transactional(rollbackFor = ServiceException.class)
     public ProductionInfo getProInfo(Long id) throws ServiceException {
         ProductionInfo productionInfo = getById(id);
         if (productionInfo != null) {
@@ -128,19 +128,19 @@ public class ProductionInfoServiceImpl extends ServiceImpl<ProductionInfoDao, Pr
     }
 
     @Override
-    public boolean saveProInfoAndImage(ProductionInfo proInfo, MultipartFile imgFile) {
+    public boolean saveProInfoAndImage(ProductionInfo proInfo, MultipartFile imgFile) throws ServiceException {
+        String fileUploadPath = productFileUploadConfig.getPath();
+        long sizeMax = Long.parseLong(productFileUploadConfig.getSize());
+        long fileSize = imgFile.getSize();
+        //File size exceeds specified limit
+        if (fileSize >= sizeMax) {
+            throw new ServiceException(MessageEnum.FILE_SIZE_MAX);
+        }
+        String filename = imgFile.getOriginalFilename();
+        //generator new file name randomly
+        String newFileName = System.currentTimeMillis() + "-" +
+                UUID.randomUUID().toString().replace("-", "") + "-" + filename;
         try {
-            String fileUploadPath = productFileUploadConfig.getPath();
-            long sizeMax = Long.parseLong(productFileUploadConfig.getSize());
-            long fileSize = imgFile.getSize();
-            //File size exceeds specified limit
-            if (fileSize >= sizeMax) {
-                throw new ServiceException(MessageEnum.FILE_SIZE_MAX);
-            }
-            String filename = imgFile.getOriginalFilename();
-            //generator new file name randomly
-            String newFileName = System.currentTimeMillis() +
-                    UUID.randomUUID().toString().replace("-", "") + filename;
             //file save result to disk
             FileHandlerUtils.saveFileToDisk(imgFile.getInputStream(), newFileName, fileUploadPath);
             //save production info and image file to database,save result
@@ -149,13 +149,11 @@ public class ProductionInfoServiceImpl extends ServiceImpl<ProductionInfoDao, Pr
             if (!saveInfoResult) {
                 //delete upload file
                 FileHandlerUtils.deleteFileFromDisk(fileUploadPath + newFileName);
-                throw new ServiceException(MessageEnum.ADD_SUCCESS);
+                throw new ServiceException(MessageEnum.ADD_ERROR);
             }
             return true;
         } catch (IOException e) {
             throw new ServiceException(MessageEnum.FILE_UPLOAD_ERROR, e);
-        } catch (ServiceException e) {
-            throw new ServiceException(e);
         }
     }
 }

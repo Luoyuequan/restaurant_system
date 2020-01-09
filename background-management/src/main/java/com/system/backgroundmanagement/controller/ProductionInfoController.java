@@ -9,10 +9,8 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,24 +40,20 @@ public class ProductionInfoController {
      * @param proInfo 新的产品信息
      * @return 响应vo
      */
-    @PostMapping(path = "add", consumes = {"multipart/form-data"})
+    @PostMapping(path = "add")
     @ApiOperation("产品信息添加和文件上传接口")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "proInfo", value = "产品信息", dataTypeClass = ProductionInfo.class, required = true),
-            @ApiImplicitParam(name = "file", value = "附加文件", required = true)
-    })
     public ResponseVO saveProInfo(
-            @RequestBody ProductionInfo proInfo, @RequestParam MultipartFile file
+            ProductionInfo proInfo
     ) {
         //校验新增的产品信息的非空参数是否符合
         boolean checked = proInfo.getTitle() == null || proInfo.getColumnId() == null ||
-                proInfo.getRankValue() == null || proInfo.getSimpleInfo() == null;
+                proInfo.getRankValue() == null || proInfo.getSimpleInfo() == null || proInfo.getDetailInfo() == null;
         if (checked) {
             return ResponseVO.error(MessageEnum.VARIABLE_MISS_ERROR);
         }
         AtomicBoolean saveResult = new AtomicBoolean(false);
         try {
-            saveResult.set(proInfoService.saveProInfoAndImage(proInfo, file));
+            saveResult.set(proInfoService.saveProInfoAndImage(proInfo, proInfo.getFile()));
         } catch (Exception e) {
             log.warn("产品信息添加异常,{}", proInfo, e.getCause());
         }
@@ -138,7 +132,7 @@ public class ProductionInfoController {
     @PutMapping("update")
     @ApiOperation("修改产品信息")
     @ApiImplicitParam(name = "companyInfo", value = "公司新的信息")
-    public ResponseVO updateProInfo(@NotNull @RequestBody ProductionInfo proInfo) {
+    public ResponseVO updateProInfo(@RequestBody ProductionInfo proInfo) {
         boolean checked = proInfo.getId() == null;
         //接收的参数是否缺少
         if (checked) {

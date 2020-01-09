@@ -1,5 +1,9 @@
 package com.system.backgroundmanagement.common;
 
+import org.springframework.util.ResourceUtils;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -21,7 +25,20 @@ public class FileHandlerUtils {
      * @param savePath 保存路径
      */
     public static void saveFileToDisk(InputStream file, String fileName, String savePath) throws IOException {
-        Files.copy(file, Paths.get(savePath + fileName), StandardCopyOption.REPLACE_EXISTING);
+        //项目的resource路径
+        String resourcePath = ResourceUtils.getURL("classpath:").getPath();
+        //新文件的路径
+        File newFile = new File(resourcePath + savePath, fileName);
+        //文件父级文件夹不存在
+        if (!newFile.getParentFile().exists()) {
+            //创建父级文件夹
+            boolean mkdirs = newFile.getParentFile().mkdirs();
+            if (!mkdirs) {
+                //文件夹创建失败
+                throw new FileNotFoundException("mkdirs failed");
+            }
+        }
+        Files.copy(file, newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
     }
 
     /**
@@ -30,7 +47,9 @@ public class FileHandlerUtils {
      * @param filePath 文件路径
      */
     public static void deleteFileFromDisk(String filePath) throws IOException {
-        Files.deleteIfExists(Paths.get(filePath));
+        //项目的resource路径
+        String resourcePath = ResourceUtils.getURL("classpath:").getPath();
+        Files.deleteIfExists(Paths.get(resourcePath + filePath));
     }
 
     ///////////////////////////////////////////////////////////////////////////
