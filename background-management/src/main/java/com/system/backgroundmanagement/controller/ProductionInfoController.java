@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @RestController
 @RequestMapping("/production-info")
 @Slf4j
-@Api(tags = "产品信息管理接口")
+@Api(tags = "产品信息管理模块")
 public class ProductionInfoController {
 
 
@@ -62,13 +62,13 @@ public class ProductionInfoController {
 
 
     /**
-     * 删除指定id集合的产品信息接口
+     * 删除指定ids集合的产品信息接口
      *
      * @param requestVo 请求参数(多个id由英文逗号拼接成字符串)
      * @return requestVo
      */
     @DeleteMapping("del")
-    @ApiOperation("删除指定id集合的产品信息接口")
+    @ApiOperation("删除指定ids集合的产品信息接口")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "requestVo", value = "请求信息", dataTypeClass = RequestVO.class, required = true),
     })
@@ -94,7 +94,7 @@ public class ProductionInfoController {
     @GetMapping("list")
     @ApiOperation(value = "产品信息列表接口", notes = "根据 title，recommend，top 筛选分页(非必须)")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "requestVo", value = "请求信息", dataTypeClass = RequestVO.class),
+            @ApiImplicitParam(name = "requestVo", value = "请求信息"),
     })
     public ResponseVO listProInfo(PageVO pageVO, RequestVO requestVo) {
         return proInfoService.listProInfo(pageVO, requestVo);
@@ -109,7 +109,7 @@ public class ProductionInfoController {
     @GetMapping("get")
     @ApiOperation(value = "获取指定id产品信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "requestVo", value = "请求信息", dataTypeClass = RequestVO.class),
+            @ApiImplicitParam(name = "requestVo", value = "请求信息"),
     })
     public ResponseVO getProInfo(RequestVO requestVo) {
         Long id = requestVo.getId();
@@ -131,7 +131,7 @@ public class ProductionInfoController {
      */
     @PutMapping("update")
     @ApiOperation("修改产品信息")
-    @ApiImplicitParam(name = "companyInfo", value = "公司新的信息")
+    @ApiImplicitParam(name = "companyInfo", value = "公司新的信息", required = true)
     public ResponseVO updateProInfo(@RequestBody ProductionInfo proInfo) {
         boolean checked = proInfo.getId() == null;
         //接收的参数是否缺少

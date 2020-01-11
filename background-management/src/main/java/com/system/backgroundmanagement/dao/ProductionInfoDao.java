@@ -11,6 +11,7 @@ import com.system.backgroundmanagement.entity.ProductionInfo;
  * @author luoyuequan
  * @since 2020-01-04
  */
+//@CacheNamespace(implementation = EhcacheCache.class, eviction = EhcacheCache.class)
 public interface ProductionInfoDao extends BaseMapper<ProductionInfo> {
 
 }

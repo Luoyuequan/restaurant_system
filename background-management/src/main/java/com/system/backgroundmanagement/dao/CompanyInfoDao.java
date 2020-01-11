@@ -11,6 +11,7 @@ import com.system.backgroundmanagement.entity.CompanyInfo;
  * @author luoyuequan
  * @since 2020-01-04
  */
+//@CacheNamespace(implementation = EhcacheCache.class, eviction = EhcacheCache.class)
 public interface CompanyInfoDao extends BaseMapper<CompanyInfo> {
 
 }

@@ -4,6 +4,7 @@ package com.system.backgroundmanagement.controller;
 import com.system.backgroundmanagement.common.MessageEnum;
 import com.system.backgroundmanagement.common.ResponseVO;
 import com.system.backgroundmanagement.entity.Admin;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.wf.jwtp.provider.TokenStore;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("admin")
+@Api(tags = "管理员模块管理")
 public class AdminController {
     @Autowired(required = false)
     private TokenStore tokenStore;

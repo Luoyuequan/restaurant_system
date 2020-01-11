@@ -7,7 +7,6 @@ import com.system.backgroundmanagement.service.INewsService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -40,10 +39,10 @@ public class NewsController {
      * @return 响应vo
      */
     @PostMapping("add")
-    public ResponseVO saveNewsInfo(@NotNull @RequestBody News newsInfo) {
+    public ResponseVO saveNewsInfo(@RequestBody News newsInfo) {
         //校验新增的新闻动态的非空参数是否符合
         boolean checked = newsInfo.getTitle() == null || newsInfo.getColumnId() == null ||
-                newsInfo.getRankValue() == null || newsInfo.getSimpleInfo() == null;
+                newsInfo.getRankValue() == null || newsInfo.getSimpleInfo() == null || newsInfo.getDetailInfo() == null;
         if (checked) {
             return ResponseVO.error(MessageEnum.VARIABLE_MISS_ERROR);
         }
@@ -64,7 +63,7 @@ public class NewsController {
      * @return requestVo
      */
     @DeleteMapping("del")
-    public ResponseVO delNewsInfo(@NotNull RequestVO requestVo) {
+    public ResponseVO delNewsInfo(RequestVO requestVo) {
         List<Long> idList = new ArrayList<>();
         ResponseVO checkResult = ParamCheckUtils.checkBatchIds(requestVo.getIds(), idList);
         if (checkResult != null) {
@@ -95,7 +94,7 @@ public class NewsController {
      * @return requestVo
      */
     @GetMapping("get")
-    public ResponseVO getNewsInfo(@NotNull RequestVO requestVo) {
+    public ResponseVO getNewsInfo(RequestVO requestVo) {
         Long id = requestVo.getId();
         if (id == null) {
             return ResponseVO.error(MessageEnum.VARIABLE_MISS_ERROR);
@@ -116,7 +115,7 @@ public class NewsController {
     @PutMapping("update")
     @ApiOperation("修改新闻动态")
     @ApiImplicitParam(name = "newsInfo", value = "待修改的新闻动态")
-    public ResponseVO updateNewsInfo(@NotNull @RequestBody News newsInfo) {
+    public ResponseVO updateNewsInfo(@RequestBody News newsInfo) {
         boolean checked = newsInfo.getId() == null;
         //接收的参数是否缺少
         if (checked) {

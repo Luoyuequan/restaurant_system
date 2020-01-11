@@ -11,5 +11,6 @@ import com.system.backgroundmanagement.entity.Admin;
  * @author luoyuequan
  * @since 2020-01-04
  */
+//@CacheNamespace(implementation = EhcacheCache.class, eviction = EhcacheCache.class)
 public interface AdminDao extends BaseMapper<Admin> {
 }

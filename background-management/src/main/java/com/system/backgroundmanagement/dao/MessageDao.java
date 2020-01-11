@@ -11,6 +11,7 @@ import com.system.backgroundmanagement.entity.Message;
  * @author luoyuequan
  * @since 2020-01-04
  */
+//@CacheNamespace(implementation = EhcacheCache.class, eviction = EhcacheCache.class)
 public interface MessageDao extends BaseMapper<Message> {
 
 }

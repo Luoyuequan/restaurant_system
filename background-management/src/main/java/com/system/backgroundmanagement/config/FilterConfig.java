@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
@@ -23,11 +22,7 @@ public class FilterConfig implements Filter {
             ServletResponse servletResponse,
             FilterChain filterChain
     ) throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
-        long startTime = System.currentTimeMillis();
         filterChain.doFilter(servletRequest, servletResponse);
-        long endTime = System.currentTimeMillis();
-        log.info("uri:{},response time:{}ms", request.getRequestURI(), (endTime - startTime));
     }
 
 }

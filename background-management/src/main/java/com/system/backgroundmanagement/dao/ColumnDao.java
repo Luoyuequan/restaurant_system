@@ -14,6 +14,7 @@ import java.util.List;
  * @author luoyuequan
  * @since 2020-01-04
  */
+//@CacheNamespace(implementation = EhcacheCache.class, eviction = EhcacheCache.class)
 public interface ColumnDao extends BaseMapper<Column> {
     /**
      * 根据栏目父id

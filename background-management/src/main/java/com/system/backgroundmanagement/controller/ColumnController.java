@@ -4,6 +4,7 @@ package com.system.backgroundmanagement.controller;
 import com.system.backgroundmanagement.common.*;
 import com.system.backgroundmanagement.entity.Column;
 import com.system.backgroundmanagement.service.IColumnService;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/column")
 @Slf4j
+@Api(tags = "栏目信息管理模块")
 public class ColumnController implements IController<Column> {
     private final IColumnService columnService;
 

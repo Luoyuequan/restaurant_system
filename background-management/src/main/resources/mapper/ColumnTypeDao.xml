@@ -3,7 +3,7 @@
 <mapper namespace="com.system.backgroundmanagement.dao.ColumnTypeDao">
 
     <!-- 开启二级缓存 -->
-    <cache/>
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.system.backgroundmanagement.entity.ColumnType">

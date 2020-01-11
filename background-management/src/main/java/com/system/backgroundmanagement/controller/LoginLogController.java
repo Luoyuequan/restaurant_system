@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.system.backgroundmanagement.common.*;
 import com.system.backgroundmanagement.entity.LoginLog;
 import com.system.backgroundmanagement.service.ILoginLogService;
-import org.jetbrains.annotations.NotNull;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +26,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/login-log")
+@Api(tags = "登录日志模块管理")
 public class LoginLogController implements IController<LoginLog> {
     @Autowired
     ILoginLogService loginLogService;
@@ -38,7 +39,7 @@ public class LoginLogController implements IController<LoginLog> {
     }
 
     @Override
-    public ResponseVO save(@NotNull LoginLog data, HttpServletRequest request) {
+    public ResponseVO save(LoginLog data, HttpServletRequest request) {
         ResponseVO responseVO = ParamCheckUtils.checkValues(data.getAdminId(), data.getIp());
         if (responseVO != null) {
             return responseVO;
@@ -52,7 +53,7 @@ public class LoginLogController implements IController<LoginLog> {
 
     @Override
     @DeleteMapping("del")
-    public ResponseVO delete(@NotNull RequestVO requestVo, HttpServletRequest request) {
+    public ResponseVO delete(RequestVO requestVo, HttpServletRequest request) {
         List<Long> idList = new ArrayList<>();
         ResponseVO checkResult = ParamCheckUtils.checkBatchIds(requestVo.getIds(), idList);
         if (checkResult != null) {

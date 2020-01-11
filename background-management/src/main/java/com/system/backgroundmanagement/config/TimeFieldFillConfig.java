@@ -28,7 +28,6 @@ public class TimeFieldFillConfig implements MetaObjectHandler {
     @Override
     public void updateFill(MetaObject metaObject) {
         long currentTimeMillis = System.currentTimeMillis();
-        System.out.println(metaObject.getOriginalObject());
         this.setFieldValByName("updateTime", currentTimeMillis, metaObject);
     }
 }

@@ -7,8 +7,8 @@ import com.system.backgroundmanagement.common.RequestVO;
 import com.system.backgroundmanagement.common.ResponseVO;
 import com.system.backgroundmanagement.entity.CompanyInfo;
 import com.system.backgroundmanagement.service.ICompanyInfoService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +27,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @RestController
 @RequestMapping("/company-info")
 @Slf4j
+@Api(tags = "公司信息管理模块")
 public class CompanyInfoController {
 
     private final ICompanyInfoService companyInfoService;
@@ -43,7 +44,7 @@ public class CompanyInfoController {
      */
     @PostMapping(path = "add")
     @ApiOperation("公司信息添加请求接口")
-    @ApiImplicitParam(name = "companyInfo", value = "公司信息", dataTypeClass = CompanyInfo.class, required = true)
+    @ApiImplicitParam(name = "companyInfo", value = "公司信息", required = true)
     public ResponseVO save(@Valid @RequestBody CompanyInfo companyInfo) {
         //校验新增的公司信息的非空参数是否符合
         ResponseVO responseVO = ParamCheckUtils.checkValues(
@@ -69,9 +70,6 @@ public class CompanyInfoController {
      */
     @GetMapping("get")
     @ApiOperation("获取指定公司信息")
-    @ApiImplicitParams({
-            @ApiImplicitParam(value = "id", required = true, defaultValue = "1", paramType = "integer")
-    })
     public ResponseVO getCompanyInfo(RequestVO requestVo) {
         //检查id是否非空
         ResponseVO responseVO = ParamCheckUtils.checkValues(requestVo.getId());
@@ -89,7 +87,7 @@ public class CompanyInfoController {
      */
     @PutMapping("update")
     @ApiOperation("修改公司信息")
-    @ApiImplicitParam(name = "companyInfo", value = "公司新的信息")
+    @ApiImplicitParam(name = "companyInfo", value = "公司新的信息", required = true)
     public ResponseVO updateCompanyInfo(@RequestBody CompanyInfo companyInfo) {
         //检查公司信息id是否非空
         ResponseVO responseVO = ParamCheckUtils.checkValues(companyInfo.getId());

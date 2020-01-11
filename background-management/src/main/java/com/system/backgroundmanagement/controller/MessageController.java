@@ -9,7 +9,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +25,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @since 2020-01-04
  */
 @RestController
-@Api(tags = "留言消息管理接口")
+@Api(tags = "留言消息管理模块")
 @RequestMapping("message")
 @Slf4j
 public class MessageController {
@@ -46,6 +45,7 @@ public class MessageController {
     @ApiOperation("游客留言添加请求接口")
     @ApiImplicitParam(name = "message", value = "留言消息体", required = true)
     public ResponseVO save(@RequestBody Message message, HttpServletRequest request) {
+
         //校验新增的留言消息的非空参数是否符合
         boolean checked = message.getName() == null || message.getContent() == null;
         if (checked) {
@@ -91,7 +91,7 @@ public class MessageController {
      */
     @GetMapping("get")
     @ApiOperation("获取指定id留言消息")
-    public ResponseVO getById(@NotNull RequestVO requestVo, HttpServletRequest request) {
+    public ResponseVO getById(RequestVO requestVo, HttpServletRequest request) {
         Long id = requestVo.getId();
         if (id == null) {
             return ResponseVO.error(MessageEnum.VARIABLE_MISS_ERROR);

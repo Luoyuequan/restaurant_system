@@ -1,12 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
+<!--scan:
+            当此属性设置为true时，配置文件如果发生改变，将会被重新加载，默认值为true。
+scanPeriod:
+            设置监测配置文件是否有修改的时间间隔，如果没有给出时间单位，默认单位是毫秒。当scan为true时，此属性生效。默认的时间间隔为1分钟。
+debug:
+            当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。
+
+configuration 子节点为 appender、logger、root
+
+            -->
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <!--用于区分不同应用程序的记录-->
+    <contextName>background-management</contextName>
+    <!--
+    格式化输出 %d表示日期,%thread表示线程名,%-5level级别从左显示5个字符宽度,
+    %logger输出日志的logger名,%msg日志消息，%n是换行符
+    -->
+    <property name="pattern" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] %-5level %logger{36} : %msg%n"/>
+    <!--解决乱码问题-->
+    <property name="charset" value="UTF-8"/>
     <!-- 系统项目名 -->
     <property name="APP_NAME" value="background-management"/>
-    <!--定义日志输出目录-->
+    <!--定义日志输出根目录-->
     <property name="LOG_HOME" value="logs"/>
-    <property name="pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
-    <property name="charset" value="utf-8"/>
-    <!-- 控制台输出的日志格式 -->
+    <!--定义 INFO 级别日志输出目录-->
+    <property name="INFO_LOG_HOME" value="${LOG_HOME}/info/${APP_NAME}.%d{yyyy-MM-dd}.log"/>
+    <!--定义 WARN 级别日志输出目录-->
+    <property name="WARN_LOG_HOME" value="${LOG_HOME}/warn/${APP_NAME}.%d{yyyy-MM-dd}.log"/>
+    <!--定义 ERROR 级别日志输出目录-->
+    <property name="ERROR_LOG_HOME" value="${LOG_HOME}/error/${APP_NAME}.%d{yyyy-MM-dd}.log"/>
+    <!--定义 DEBUG 级别sql日志输出目录-->
+    <property name="SQL_LOG_HOME" value="${LOG_HOME}/sql/${APP_NAME}.%d{yyyy-MM-dd}.log"/>
+    <!-- 控制台输出-->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>${pattern}</pattern>
@@ -15,109 +40,108 @@
     </appender>
     <!-- 输出 info log 至统一日志文件中 -->
     <appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- ThresholdFilter:临界值过滤器，过滤掉 TRACE 和 DEBUG 级别的日志 -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${INFO_LOG_HOME}</fileNamePattern>
+            <maxHistory>7</maxHistory><!--保存最近7天的日志-->
+        </rollingPolicy>
         <encoder>
             <pattern>${pattern}</pattern>
             <charset>${charset}</charset>
         </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOG_HOME}/info/${APP_NAME}_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <!-- 根据日志文件按天回滚，保存时间为30天，30天之前的都将被清理掉 -->
+            &lt;!&ndash; 根据日志文件按天回滚，保存时间为30天，30天之前的都将被清理掉 &ndash;&gt;
             <maxHistory>7</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>10MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <!-- 只打印 INFO 日志 -->
+            &lt;!&ndash; 只打印 INFO 日志 &ndash;&gt;
             <level>INFO</level>
             <onMatch>ACCEPT</onMatch>
             <onMismatch>DENY</onMismatch>
-        </filter>
+        </filter>-->
     </appender>
     <!-- 输出 sql log 至统一日志文件中 -->
     <appender name="SQL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${SQL_LOG_HOME}</fileNamePattern>
+            <maxHistory>10</maxHistory><!--保存最近10天的日志-->
+        </rollingPolicy>
         <encoder>
             <pattern>${pattern}</pattern>
             <charset>${charset}</charset>
         </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOG_HOME}/sql/${APP_NAME}_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <!-- 根据日志文件按天回滚，保存时间为30天，30天之前的都将被清理掉 -->
+            &lt;!&ndash; 根据日志文件按天回滚，保存时间为30天，30天之前的都将被清理掉 &ndash;&gt;
             <maxHistory>7</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>10MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
-        </rollingPolicy>
+        </rollingPolicy>-->
     </appender>
     <!-- 输出error log 至统一日志文件中 -->
     <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_HOME}/error/${APP_NAME}_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <!-- 根据日志文件按天回滚，保存时间为30天，30天之前的都将被清理掉 -->
-            <maxHistory>7</maxHistory>
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>20MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
+            <fileNamePattern>${ERROR_LOG_HOME}</fileNamePattern>
+            <maxHistory>7</maxHistory><!--保存最近7天的日志-->
         </rollingPolicy>
         <encoder>
             <pattern>${pattern}</pattern>
             <charset>${charset}</charset>
         </encoder>
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <!-- 只打印ERROR日志 -->
-            <level>ERROR</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
+        <!--        <filter class="ch.qos.logback.classic.filter.LevelFilter">-->
+        <!--            &lt;!&ndash; 只打印ERROR日志 &ndash;&gt;-->
+        <!--            <level>ERROR</level>-->
+        <!--            <onMatch>ACCEPT</onMatch>-->
+        <!--            <onMismatch>DENY</onMismatch>-->
+        <!--        </filter>-->
     </appender>
     <!-- 输出 warn log 至统一日志文件中 -->
     <appender name="WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_HOME}/warn/${APP_NAME}_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <!-- 根据日志文件按天回滚，保存时间为30天，30天之前的都将被清理掉 -->
-            <maxHistory>30</maxHistory>
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>20MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
+            <fileNamePattern>${WARN_LOG_HOME}</fileNamePattern>
+            <maxHistory>30</maxHistory><!--保存最近30天的日志-->
         </rollingPolicy>
         <encoder>
             <pattern>${pattern}</pattern>
             <charset>${charset}</charset>
         </encoder>
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <!-- 只打印WAR日志 -->
+        <!--<filter class="ch.qos.logback.classic.filter.LevelFilter">
+            &lt;!&ndash; 只打印WAR日志 &ndash;&gt;
             <level>WARN</level>
             <onMatch>ACCEPT</onMatch>
             <onMismatch>DENY</onMismatch>
-        </filter>
+        </filter>-->
     </appender>
     <!-- MyBatis sql 日志输出设置 -->
     <logger name="com.system.backgroundmanagement.dao" level="DEBUG" additivity="false">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="SQL"/>
     </logger>
-    <!-- war级别日志 -->
-    <logger name="com.system.backgroundmanagement" level="WARN" additivity="false">
-        <level value="WARN"/>
-        <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="WARN"/>
-    </logger>
-    <!-- error级别日志 -->
-    <logger name="com.system.backgroundmanagement" level="ERROR" additivity="false">
-        <level value="ERROR"/>
-        <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="ERROR"/>
-    </logger>
     <!-- info 级别日志 -->
     <logger name="com.system.backgroundmanagement" level="INFO" additivity="false">
-        <level value="INFO"/>
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="INFO"/>
     </logger>
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="ERROR"/>
         <appender-ref ref="WARN"/>
-        <!--        <appender-ref ref="INFO"/>-->
+        <appender-ref ref="ERROR"/>
     </root>
 </configuration>
