@@ -2,11 +2,11 @@
     包含前后台模块
 ## 所含技术
 1. springboot
-2. mybatis-plus
-3. ehcahe二级缓存
+2. mybatis-plus(ROM)
+3. ehcache二级缓存
 4. swagger2(api接口测试)
-5. hibernate validate
-6. global exception handler
+5. hibernate validate(数据校验)
+6. global exception handler(全局异常处理)
 ## 系统需求
 1. 后台
     * 管理员模块【登录，注销】
