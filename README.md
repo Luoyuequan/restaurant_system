@@ -1,5 +1,13 @@
 # 餐饮系统
     包含前后台模块
+## 所含技术
+1. springboot
+2. mybatis-plus
+3. ehcahe二级缓存
+4. swagger2(api接口测试)
+5. hibernate validate
+6. global exception handler
+## 系统需求
 1. 后台
     * 管理员模块【登录，注销】
     * 公司信息模块【设置，修改，展示】
